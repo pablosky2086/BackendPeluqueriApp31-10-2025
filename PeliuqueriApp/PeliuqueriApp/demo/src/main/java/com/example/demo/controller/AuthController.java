@@ -7,6 +7,7 @@ import com.example.demo.payload.request.RegisterRequest;
 import com.example.demo.payload.response.MessageResponse;
 import com.example.demo.repository.UsuarioRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +18,30 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UsuarioRepository usuarioRepository) {
+    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUsuario(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<?> authenticateUsuario(@RequestBody LoginRequest loginRequest){
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
-        return ResponseEntity.ok("Email: " + email + "\nPassword: " + password);
+
+        if (usuarioRepository.existsByEmail(email)){
+            Usuario usuarioExistenete = usuarioRepository.findByEmail(email);
+            if (passwordEncoder.matches(password,usuarioExistenete.getContrasena())){
+                return ResponseEntity.ok(new MessageResponse("Logeado con exito. Hola " + usuarioExistenete.getNombre_completo()));
+            }
+            else {
+                return ResponseEntity.status(401).body(new MessageResponse("Contraseña Incorrecta"));
+            }
+        }
+
+        return ResponseEntity.badRequest().body(new MessageResponse("No existe un usuario con este email"));
+
     }
 
     @PostMapping("/register")
@@ -43,11 +58,11 @@ public class AuthController {
 
         usuario.setNombre_completo(nombreCompleto);
         usuario.setEmail(email);
-        usuario.setContrasena(password);
+        usuario.setContrasena(passwordEncoder.encode(password));
 
         usuarioRepository.save(usuario);
 
-        return ResponseEntity.ok(new MessageResponse("Email: " + email + "\nPassword: " + password + "\nNombreCompleto: " + nombreCompleto));
+        return ResponseEntity.ok(new MessageResponse("Email: " + email + " Password: " + password + " NombreCompleto: " + nombreCompleto));
     }
 
 }

@@ -12,4 +12,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findUsuariosByNombreParcial(@Param("nombre") String nombre);
 
     Boolean existsByEmail(String email);
+
+    Usuario findByEmail(String email);
 }
