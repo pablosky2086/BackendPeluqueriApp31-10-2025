@@ -11,4 +11,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @Query(value = "SELECT * FROM usuarios WHERE nombre LIKE %:nombre%", nativeQuery = true)
     List<Usuario> findUsuariosByNombreParcial(@Param("nombre") String nombre);
 
+    Boolean existsByEmail(String email);
 }
