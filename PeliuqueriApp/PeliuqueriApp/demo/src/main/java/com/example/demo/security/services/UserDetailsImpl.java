@@ -6,12 +6,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.example.demo.model.Usuario;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+@ToString
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -59,6 +60,8 @@ public class UserDetailsImpl implements UserDetails {
         return email;
     }
 
+    public String getName() { return nombreCompleto; }
+
     @Override
     public String getPassword() {
         return contrasena;
@@ -66,7 +69,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nombreCompleto;
+        return email;
     }
 
     @Override
@@ -98,4 +101,6 @@ public class UserDetailsImpl implements UserDetails {
         UserDetailsImpl user = (UserDetailsImpl) o;
         return Objects.equals(id, user.id);
     }
+
+
 }

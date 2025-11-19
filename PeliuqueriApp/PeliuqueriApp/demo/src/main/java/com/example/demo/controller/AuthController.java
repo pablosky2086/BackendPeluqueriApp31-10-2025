@@ -41,6 +41,7 @@ public class AuthController {
     public ResponseEntity<?> authenticateUsuario(@RequestBody LoginRequest loginRequest){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
@@ -75,7 +76,7 @@ public class AuthController {
         Role role;
 
         if (strRole == null || strRole == "") role = Role.ROLE_CLIENTE;
-        else if (strRole.equals("profesor")) role = Role.ROLE_ADMIN;
+        else if (strRole.equals("admin")) role = Role.ROLE_ADMIN;
         else if (strRole.equals("grupo")) role = Role.ROLE_GRUPO;
         else role = Role.ROLE_CLIENTE;
 
