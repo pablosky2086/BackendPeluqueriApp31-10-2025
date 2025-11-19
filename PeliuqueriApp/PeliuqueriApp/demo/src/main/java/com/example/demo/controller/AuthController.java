@@ -75,7 +75,7 @@ public class AuthController {
         Role role;
 
         if (strRole == null || strRole == "") role = Role.ROLE_CLIENTE;
-        else if (strRole.equals("profesor")) role = Role.ROLE_PROFESOR;
+        else if (strRole.equals("profesor")) role = Role.ROLE_ADMIN;
         else if (strRole.equals("grupo")) role = Role.ROLE_GRUPO;
         else role = Role.ROLE_CLIENTE;
 
