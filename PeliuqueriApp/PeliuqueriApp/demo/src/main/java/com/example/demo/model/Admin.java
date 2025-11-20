@@ -13,4 +13,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "admins")
 public class Admin extends Usuario{
     private String especialidad;
+
+    public Admin(Usuario usuario) {
+        this.setNombre_completo(usuario.getNombre_completo());
+        this.setEmail(usuario.getEmail());
+        this.setContrasena(usuario.getContrasena());
+    }
 }

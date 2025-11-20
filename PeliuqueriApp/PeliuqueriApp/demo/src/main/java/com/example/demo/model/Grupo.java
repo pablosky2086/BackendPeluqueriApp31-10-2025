@@ -14,4 +14,10 @@ import lombok.NoArgsConstructor;
 public class Grupo extends Usuario{
     private String clase;
     private Turno turno;
+
+    public Grupo(Usuario usuario) {
+        this.setNombre_completo(usuario.getNombre_completo());
+        this.setEmail(usuario.getEmail());
+        this.setContrasena(usuario.getContrasena());
+    }
 }

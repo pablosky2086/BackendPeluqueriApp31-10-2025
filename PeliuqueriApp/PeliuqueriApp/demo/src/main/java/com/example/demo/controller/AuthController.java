@@ -1,12 +1,13 @@
 package com.example.demo.controller;
 
 
-import com.example.demo.model.Role;
-import com.example.demo.model.Usuario;
-import com.example.demo.payload.request.LoginRequest;
-import com.example.demo.payload.request.RegisterRequest;
+import com.example.demo.model.*;
+import com.example.demo.payload.request.*;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.payload.response.MessageResponse;
+import com.example.demo.repository.AdminRepository;
+import com.example.demo.repository.ClienteRepository;
+import com.example.demo.repository.GrupoRepository;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.security.services.UserDetailsImpl;
@@ -29,12 +30,18 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+    private final ClienteRepository clienteRepository;
+    private final AdminRepository adminRepository;
+    private final GrupoRepository grupoRepository;
 
-    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils, ClienteRepository clienteRepository, AdminRepository adminRepository, GrupoRepository grupoRepository) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
+        this.clienteRepository = clienteRepository;
+        this.adminRepository = adminRepository;
+        this.grupoRepository = grupoRepository;
     }
 
     @PostMapping("/login")
@@ -56,15 +63,62 @@ public class AuthController {
 
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUsuario(@RequestBody RegisterRequest registerRequest){
+    @PostMapping("/register/cliente")
+    public ResponseEntity<?> registerCliente(@RequestBody RegisterClienteRequest registerClienteRequest) {
+        try {
+            Usuario usuario = registerUsuario(registerClienteRequest);
+            Cliente cliente = new Cliente(usuario);
+            cliente.setRole(Role.ROLE_CLIENTE);
+            cliente.setAlergenos(registerClienteRequest.getAlergenos());
+            cliente.setTelefono(registerClienteRequest.getTelefono());
+            cliente.setObservaciones(registerClienteRequest.getObservaciones());
+            clienteRepository.save(cliente);
+            return ResponseEntity.ok(new MessageResponse("Email: " + cliente.getEmail() + " NombreCompleto: " + cliente.getNombre_completo()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new MessageResponse("Ya existe un usuario con este email"));
+        }
+    }
+
+    @PostMapping("/register/grupo")
+    public ResponseEntity<?> registerGrupo(@RequestBody RegisterGrupoRequest registerGrupoRequest) {
+        try {
+            Usuario usuario = registerUsuario(registerGrupoRequest);
+            Grupo grupo = new Grupo(usuario);
+            grupo.setRole(Role.ROLE_GRUPO);
+            grupo.setTurno(registerGrupoRequest.getTurno());
+            grupo.setClase(registerGrupoRequest.getClase());
+            grupoRepository.save(grupo);
+            return ResponseEntity.ok(new MessageResponse("Email: " + grupo.getEmail() + " NombreCompleto: " + grupo.getNombre_completo()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new MessageResponse("Ya existe un usuario con este email"));
+        }
+    }
+
+    @PostMapping("/register/admin")
+    public ResponseEntity<?> registerAdmin(@RequestBody RegisterAdminRequest registerAdminRequest) {
+        try {
+            Usuario usuario = registerUsuario(registerAdminRequest);
+            Admin admin = new Admin(usuario);
+            admin.setRole(Role.ROLE_ADMIN);
+            admin.setEspecialidad(registerAdminRequest.getEspecialidad());
+            adminRepository.save(admin);
+            return ResponseEntity.ok(new MessageResponse("Email: " + admin.getEmail() + " NombreCompleto: " + admin.getNombre_completo()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new MessageResponse("Ya existe un usuario con este email"));
+        }
+    }
+
+
+    private Usuario registerUsuario(@RequestBody RegisterRequest registerRequest) throws Exception {
         String nombreCompleto = registerRequest.getNombreCompleto();
         String email = registerRequest.getEmail();
         String password = registerRequest.getPassword();
-        String strRole = registerRequest.getRole();
 
         if (usuarioRepository.existsByEmail(email)){
-            return ResponseEntity.badRequest().body(new MessageResponse("Ya existe un usuario con este email"));
+            throw new Exception("Ya existe un usuario con este email");
         }
 
         Usuario usuario = new Usuario();
@@ -73,18 +127,9 @@ public class AuthController {
         usuario.setEmail(email);
         usuario.setContrasena(passwordEncoder.encode(password));
 
-        Role role;
-
-        if (strRole == null || strRole == "") role = Role.ROLE_CLIENTE;
-        else if (strRole.equals("admin")) role = Role.ROLE_ADMIN;
-        else if (strRole.equals("grupo")) role = Role.ROLE_GRUPO;
-        else role = Role.ROLE_CLIENTE;
-
-        usuario.setRole(role);
-
-        usuarioRepository.save(usuario);
-
-        return ResponseEntity.ok(new MessageResponse("Email: " + email + " Password: " + password + " NombreCompleto: " + nombreCompleto)); //Quitar Password
+        return usuario;
     }
+
+
 
 }

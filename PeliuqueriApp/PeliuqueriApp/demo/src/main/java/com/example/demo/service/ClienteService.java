@@ -6,19 +6,23 @@ import com.example.demo.repository.ClienteRepository;
 import com.example.demo.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ClienteService extends UsuarioService{
+public class ClienteService {
     private final ClienteRepository clienteRepository;
 
-    public ClienteService(UsuarioRepository usuarioRepository, ClienteRepository clienteRepository) {
-        super(usuarioRepository);
+    public ClienteService( ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
     }
 
+    public List<Cliente> findAll() {
+        return clienteRepository.findAll();
+    }
+
     public Optional<Cliente> update (Long id, Cliente cliente){
-        Optional<Usuario> oldCliente = clienteRepository.findById(id);
+        Optional<Cliente> oldCliente = clienteRepository.findById(id);
         if (oldCliente.isEmpty()){
             return Optional.empty();
         }

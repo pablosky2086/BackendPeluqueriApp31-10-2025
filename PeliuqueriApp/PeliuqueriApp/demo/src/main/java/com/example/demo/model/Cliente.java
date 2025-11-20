@@ -14,8 +14,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "clientes")
 public class Cliente extends Usuario{
-    private Integer telefono;
+    private String telefono;
     private String observaciones;
     private String alergenos;
+
+    public Cliente(Usuario usuario) {
+        this.setNombre_completo(usuario.getNombre_completo());
+        this.setEmail(usuario.getEmail());
+        this.setContrasena(usuario.getContrasena());
+    }
 
 }
