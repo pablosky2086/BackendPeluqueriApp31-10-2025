@@ -1,8 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +17,7 @@ public class Cliente extends Usuario{
     private String alergenos;
 
     public Cliente(Usuario usuario) {
-        this.setNombre_completo(usuario.getNombre_completo());
+        this.setNombreCompleto(usuario.getNombreCompleto());
         this.setEmail(usuario.getEmail());
         this.setContrasena(usuario.getContrasena());
     }

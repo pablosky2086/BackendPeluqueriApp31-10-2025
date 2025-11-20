@@ -16,7 +16,7 @@ public class Grupo extends Usuario{
     private Turno turno;
 
     public Grupo(Usuario usuario) {
-        this.setNombre_completo(usuario.getNombre_completo());
+        this.setNombreCompleto(usuario.getNombreCompleto());
         this.setEmail(usuario.getEmail());
         this.setContrasena(usuario.getContrasena());
     }

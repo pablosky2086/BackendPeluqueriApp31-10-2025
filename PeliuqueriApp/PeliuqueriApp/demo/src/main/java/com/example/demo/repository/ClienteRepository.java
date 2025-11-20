@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
 
-    List<Cliente> findByNombre_completoContaining(String nombre_completo);
+    List<Cliente> findByNombreCompletoContaining(String nombre);
 
     // PARA REVISAR
     @Query(value = "SELECT * FROM clientes WHERE alergenos LIKE %:alergenos%", nativeQuery = true)

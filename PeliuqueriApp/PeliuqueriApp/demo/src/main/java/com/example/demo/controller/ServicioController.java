@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Servicio;
 import com.example.demo.service.ServicioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("api/servicios")
@@ -20,6 +24,11 @@ public class ServicioController {
         this.servicioService = servicioService;
     }
 
+    @Operation(summary = "Obtener todos los servicios", description = "Devuelve todos los servicios disponibles")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Servicios encontrados"),
+            @ApiResponse(responseCode = "401", description = "No autorizado"),
+    })
     @GetMapping("/")
     public List<Servicio> getAllServicios(){return servicioService.findAll();}
 

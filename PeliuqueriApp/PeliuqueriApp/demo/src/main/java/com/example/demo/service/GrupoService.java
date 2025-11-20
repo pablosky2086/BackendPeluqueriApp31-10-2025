@@ -23,7 +23,7 @@ public class GrupoService extends UsuarioService{
             return Optional.empty();
         }
         Grupo newGrupo = (Grupo) oldGrupo.get();
-        if (grupo.getNombre_completo()!=null) newGrupo.setNombre_completo(grupo.getNombre_completo());
+        if (grupo.getNombreCompleto()!=null) newGrupo.setNombreCompleto(grupo.getNombreCompleto());
         if (grupo.getEmail()!=null) newGrupo.setEmail(grupo.getEmail());
         if (grupo.getContrasena()!=null) newGrupo.setContrasena(grupo.getContrasena());
         if (grupo.getTurno()!=null) newGrupo.setTurno(grupo.getTurno());

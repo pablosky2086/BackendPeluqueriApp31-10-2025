@@ -73,7 +73,7 @@ public class AuthController {
             cliente.setTelefono(registerClienteRequest.getTelefono());
             cliente.setObservaciones(registerClienteRequest.getObservaciones());
             clienteRepository.save(cliente);
-            return ResponseEntity.ok(new MessageResponse("Email: " + cliente.getEmail() + " NombreCompleto: " + cliente.getNombre_completo()));
+            return ResponseEntity.ok(new MessageResponse("Email: " + cliente.getEmail() + " NombreCompleto: " + cliente.getNombreCompleto()));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(new MessageResponse("Ya existe un usuario con este email"));
@@ -89,7 +89,7 @@ public class AuthController {
             grupo.setTurno(registerGrupoRequest.getTurno());
             grupo.setClase(registerGrupoRequest.getClase());
             grupoRepository.save(grupo);
-            return ResponseEntity.ok(new MessageResponse("Email: " + grupo.getEmail() + " NombreCompleto: " + grupo.getNombre_completo()));
+            return ResponseEntity.ok(new MessageResponse("Email: " + grupo.getEmail() + " NombreCompleto: " + grupo.getNombreCompleto()));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(new MessageResponse("Ya existe un usuario con este email"));
@@ -104,7 +104,7 @@ public class AuthController {
             admin.setRole(Role.ROLE_ADMIN);
             admin.setEspecialidad(registerAdminRequest.getEspecialidad());
             adminRepository.save(admin);
-            return ResponseEntity.ok(new MessageResponse("Email: " + admin.getEmail() + " NombreCompleto: " + admin.getNombre_completo()));
+            return ResponseEntity.ok(new MessageResponse("Email: " + admin.getEmail() + " NombreCompleto: " + admin.getNombreCompleto()));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(new MessageResponse("Ya existe un usuario con este email"));
@@ -123,7 +123,7 @@ public class AuthController {
 
         Usuario usuario = new Usuario();
 
-        usuario.setNombre_completo(nombreCompleto);
+        usuario.setNombreCompleto(nombreCompleto);
         usuario.setEmail(email);
         usuario.setContrasena(passwordEncoder.encode(password));
 

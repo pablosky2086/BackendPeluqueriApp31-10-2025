@@ -23,7 +23,7 @@ public class AdminService extends UsuarioService{
             return Optional.empty();
         }
         Admin newAdmin = (Admin) oldAdmin.get();
-        if (admin.getNombre_completo()!=null) newAdmin.setNombre_completo(admin.getNombre_completo());
+        if (admin.getNombreCompleto()!=null) newAdmin.setNombreCompleto(admin.getNombreCompleto());
         if (admin.getEmail()!=null) newAdmin.setEmail(admin.getEmail());
         if (admin.getContrasena()!=null) newAdmin.setContrasena(admin.getContrasena());
         if (admin.getEspecialidad()!=null) newAdmin.setEspecialidad(admin.getEspecialidad());

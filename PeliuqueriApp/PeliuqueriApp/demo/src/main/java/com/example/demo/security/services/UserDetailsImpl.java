@@ -3,7 +3,6 @@ package com.example.demo.security.services;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import com.example.demo.model.Usuario;
 import lombok.ToString;
@@ -41,7 +40,7 @@ public class UserDetailsImpl implements UserDetails {
 
         return new UserDetailsImpl(
                 usuario.getId(),
-                usuario.getNombre_completo(),
+                usuario.getNombreCompleto(),
                 usuario.getEmail(),
                 usuario.getContrasena(),
                 authorities);

@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.model.Cliente;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.ClienteRepository;
-import com.example.demo.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class ClienteService {
 
     public Optional<Cliente> findById(Long id) { return clienteRepository.findById(id); }
 
-    public List<Cliente> findByPartialName(String nombre) { return clienteRepository.findByNombre_completoContaining(nombre); }
+    public List<Cliente> findByPartialName(String nombre) { return clienteRepository.findByNombreCompletoContaining(nombre); }
 
     public Optional<Cliente> update (Long id, Cliente cliente){
         Optional<Cliente> oldCliente = clienteRepository.findById(id);
@@ -31,7 +30,7 @@ public class ClienteService {
             return Optional.empty();
         }
         Cliente newCliente = (Cliente) oldCliente.get();
-        if (cliente.getNombre_completo()!=null) newCliente.setNombre_completo(cliente.getNombre_completo());
+        if (cliente.getNombreCompleto()!=null) newCliente.setNombreCompleto(cliente.getNombreCompleto());
         if (cliente.getEmail()!=null) newCliente.setEmail(cliente.getEmail());
         if (cliente.getContrasena()!=null) newCliente.setContrasena(cliente.getContrasena());
         if (cliente.getTelefono()!=null) newCliente.setTelefono(cliente.getTelefono());

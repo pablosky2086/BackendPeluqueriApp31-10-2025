@@ -15,7 +15,7 @@ public class Admin extends Usuario{
     private String especialidad;
 
     public Admin(Usuario usuario) {
-        this.setNombre_completo(usuario.getNombre_completo());
+        this.setNombreCompleto(usuario.getNombreCompleto());
         this.setEmail(usuario.getEmail());
         this.setContrasena(usuario.getContrasena());
     }
