@@ -21,7 +21,7 @@ public class ServicioController {
 
     @GetMapping("/")
     public List<Servicio> getAllServicios(){return servicioService.findAll();}
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Servicio> findServicioById(@PathVariable Long id){
         Servicio servicio = servicioService.findById(id)
