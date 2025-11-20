@@ -1,0 +1,68 @@
+[
+  {
+    "nombre": "Peinado",
+    "descripcion": "Lavado y peinado con secado profesional para un acabado natural y duradero.",
+    "duracion": 8,
+    "precio": 5.00
+  },
+  {
+    "nombre": "Peinado + Recogido",
+    "descripcion": "Lavado, peinado y recogido elegante para eventos o celebraciones especiales.",
+    "duracion": 12,
+    "precio": 12.00
+  },
+  {
+    "nombre": "Corte Femenino",
+    "descripcion": "Corte con asesoría de imagen, lavado y estilizado final adaptado al tipo de cabello.",
+    "duracion": 12,
+    "precio": 5.00
+  },
+  {
+    "nombre": "Corte Masculino",
+    "descripcion": "Corte de estilo masculino con lavado y retoques de acabado para un look definido.",
+    "duracion": 8,
+    "precio": 2.00
+  },
+  {
+    "nombre": "Color Completo",
+    "descripcion": "Coloración completa del cabello, con diagnóstico previo y productos de calidad profesional.",
+    "duracion": 10,
+    "precio": 8.00
+  },
+  {
+    "nombre": "Color Raíces",
+    "descripcion": "Aplicación de tinte únicamente en raíces para mantener un color uniforme y natural.",
+    "duracion": 10,
+    "precio": 5.00
+  },
+  {
+    "nombre": "Mechas",
+    "descripcion": "Técnica de mechas con decoloración controlada para aportar luz y contraste al peinado.",
+    "duracion": 16,
+    "precio": 10.00
+  },
+  {
+    "nombre": "Cambio de estilo + color",
+    "descripcion": "Transformación total del look con nuevo corte y color acorde a la fisonomía y tendencia.",
+    "duracion": 12,
+    "precio": 15.00
+  },
+  {
+    "nombre": "Cambio forma permanente",
+    "descripcion": "Tratamiento de moldeado permanente para aportar volumen o rizo de larga duración.",
+    "duracion": 16,
+    "precio": 10.00
+  },
+  {
+    "nombre": "Tratamiento",
+    "descripcion": "Tratamiento capilar reparador e hidratante para mejorar la salud y brillo del cabello.",
+    "duracion": 12,
+    "precio": 5.00
+  },
+  {
+    "nombre": "Hidratación con masaje craneal",
+    "descripcion": "Tratamiento hidratante profundo acompañado de masaje relajante en cuero cabelludo.",
+    "duracion": 6,
+    "precio": 9.00
+  }
+]

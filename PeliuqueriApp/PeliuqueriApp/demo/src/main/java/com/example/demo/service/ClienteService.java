@@ -21,6 +21,10 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
+    public Optional<Cliente> findById(Long id) { return clienteRepository.findById(id); }
+
+    public List<Cliente> findByPartialName(String nombre) { return clienteRepository.findByNombre_completoContaining(nombre); }
+
     public Optional<Cliente> update (Long id, Cliente cliente){
         Optional<Cliente> oldCliente = clienteRepository.findById(id);
         if (oldCliente.isEmpty()){

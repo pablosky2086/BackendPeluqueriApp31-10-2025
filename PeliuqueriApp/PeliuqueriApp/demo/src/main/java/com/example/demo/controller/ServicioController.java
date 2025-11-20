@@ -5,6 +5,7 @@ import com.example.demo.service.ServicioService;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,12 +34,14 @@ public class ServicioController {
     public List<Servicio> findServicioByNombreParcial(@PathVariable String nombre){return servicioService.findServiciosByNombreParcial(nombre);}
 
     @PostMapping("/")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Servicio> addServicio(@RequestBody Servicio servicio){
         Servicio addedServicio = servicioService.save(servicio);
         return new ResponseEntity<Servicio>(servicio, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Servicio> updateServicio(@PathVariable Long id, @RequestBody Servicio servicio){
         Servicio uppdatedServicio = servicioService.update(id,servicio)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Servicio no encontrado"));
@@ -46,6 +49,7 @@ public class ServicioController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response> deleteServicio(@PathVariable long id){
         servicioService.deleteById(id);
         return ResponseEntity.noContent().build();
