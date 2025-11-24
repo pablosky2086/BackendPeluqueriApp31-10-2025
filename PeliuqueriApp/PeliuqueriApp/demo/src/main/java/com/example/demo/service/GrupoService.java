@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Grupo;
+import com.example.demo.model.Turno;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.GrupoRepository;
 import com.example.demo.repository.UsuarioRepository;
@@ -19,7 +20,12 @@ public class GrupoService{
 
     public Optional<Grupo> findById(Long id) { return grupoRepository.findById(id); }
 
-    public List<Grupo> findByTurnoParcial(String turno) {return grupoRepository.findGruposByTurnoParcial(turno);}
+    public List<Grupo> findByTurnoParcial(String turno) {
+        System.out.println("Buscando grupos con turno que contiene: " + turno);
+        Turno t = Turno.valueOf(turno.toUpperCase());
+        System.out.println("Turno convertido: " + t);
+        return grupoRepository.findByTurno(t);
+    }
 
     public Optional<Grupo> update (Long id, Grupo grupo){
         Optional<Grupo> oldGrupo = grupoRepository.findById(id);

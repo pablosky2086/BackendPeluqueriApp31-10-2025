@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.model.Admin;
 import com.example.demo.model.Grupo;
+import com.example.demo.model.Turno;
 import com.example.demo.service.GrupoService;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/grupos")
@@ -32,9 +37,10 @@ public class GrupoController {
         return new ResponseEntity<Grupo>(grupo, HttpStatus.OK);
     }
 
-    @GetMapping("/turno/{turno} ")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public Object getGruposByTurno(@PathVariable String turno){
+    @GetMapping("/turno/{turno}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<Grupo> getGruposByTurno(@PathVariable String turno){
+        System.out.println("Turno recibido: " + turno);
         return grupoService.findByTurnoParcial(turno);
     }
 

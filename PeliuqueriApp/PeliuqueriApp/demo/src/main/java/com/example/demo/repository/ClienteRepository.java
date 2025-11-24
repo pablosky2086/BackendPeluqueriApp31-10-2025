@@ -10,13 +10,9 @@ import java.util.Optional;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    // PARA REVISAR
-    @Query(value = "SELECT * FROM clientes WHERE alergenos LIKE %:alergenos%", nativeQuery = true)
-    List<Cliente> findClientesByAlergenosParcial(@Param("alergenos") String alergenos);
+    List<Cliente> findByAlergenosContaining(@Param("alergenos") String alergenos);
 
-    // PARA REVISAR
-    @Query(value = "SELECT * FROM clientes WHERE observaciones LIKE %:observaciones%", nativeQuery = true)
-    List<Cliente> findClientesByObservacionesParcial(@Param("observaciones") String observaciones);
+    List<Cliente> findByObservacionesContaining(@Param("observaciones") String observaciones);
 
 
 

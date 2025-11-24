@@ -19,7 +19,7 @@ public class AdminService{
 
     public Optional<Admin> findById(Long id) { return adminRepository.findById(id); }
 
-    public List<Admin> findByPartialEspecialidad(String especialidad) { return adminRepository.findAdminsByEspecialidadParcial(especialidad); }
+    public List<Admin> findByPartialEspecialidad(String especialidad) { return adminRepository.findByEspecialidadContaining(especialidad); }
 
     public Optional<Admin> update (Long id, Admin admin){
         Optional<Admin> oldAdmin = adminRepository.findById(id);

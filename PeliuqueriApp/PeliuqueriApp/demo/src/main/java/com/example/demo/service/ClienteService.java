@@ -23,11 +23,11 @@ public class ClienteService {
     public Optional<Cliente> findById(Long id) { return clienteRepository.findById(id); }
 
     public List<Cliente> findByAlergenosParcial(String alergenos) {
-        return clienteRepository.findClientesByAlergenosParcial(alergenos);
+        return clienteRepository.findByAlergenosContaining(alergenos);
     }
 
     public List<Cliente> findByObservacionesParcial(String observaciones) {
-        return clienteRepository.findClientesByObservacionesParcial(observaciones);
+        return clienteRepository.findByObservacionesContaining(observaciones);
     }
 
     public Optional<Cliente> update (Long id, Cliente cliente){

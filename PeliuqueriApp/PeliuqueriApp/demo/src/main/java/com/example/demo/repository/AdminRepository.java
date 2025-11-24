@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AdminRepository extends JpaRepository<Admin, Long> {
-    @Query(value = "SELECT * FROM admins WHERE especialidad LIKE %:especialidad%", nativeQuery = true)
-    List<Admin> findAdminsByEspecialidadParcial(@Param("especialidad") String especialidad);
+
+    //Hibernate: select a1_0.id,a1_1.contrasena,a1_1.email,a1_1.nombre_completo,a1_1.role,a1_0.especialidad from admins a1_0 join usuarios a1_1 on a1_0.id=a1_1.id where a1_0.especialidad like ? escape '\\'
+    List<Admin> findByEspecialidadContaining(@Param("especialidad") String especialidad);
 }
