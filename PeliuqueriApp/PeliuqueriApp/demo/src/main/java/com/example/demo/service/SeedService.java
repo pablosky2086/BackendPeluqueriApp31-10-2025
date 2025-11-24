@@ -24,7 +24,7 @@ public class SeedService {
         try {
             InputStream inputStream = getClass()
                     .getClassLoader()
-                    .getResourceAsStream("seed/servicios.json");
+                    .getResourceAsStream("seed/data.json");
 
             if (inputStream == null) {
                 System.err.println("No se encontró seed/data.json");
