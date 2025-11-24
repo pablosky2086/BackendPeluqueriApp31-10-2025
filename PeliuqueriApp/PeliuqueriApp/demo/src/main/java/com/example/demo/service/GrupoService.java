@@ -6,19 +6,23 @@ import com.example.demo.repository.GrupoRepository;
 import com.example.demo.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GrupoService extends UsuarioService{
+public class GrupoService{
     private final GrupoRepository grupoRepository;
 
-    public GrupoService(UsuarioRepository usuarioRepository, GrupoRepository grupoRepository) {
-        super(usuarioRepository);
-        this.grupoRepository = grupoRepository;
-    }
+    public GrupoService(UsuarioRepository usuarioRepository, GrupoRepository grupoRepository) {this.grupoRepository = grupoRepository;}
+
+    public List<Grupo> findAll() {return grupoRepository.findAll();}
+
+    public Optional<Grupo> findById(Long id) { return grupoRepository.findById(id); }
+
+    public List<Grupo> findByTurnoParcial(String turno) {return grupoRepository.findGruposByTurnoParcial(turno);}
 
     public Optional<Grupo> update (Long id, Grupo grupo){
-        Optional<Usuario> oldGrupo = grupoRepository.findById(id);
+        Optional<Grupo> oldGrupo = grupoRepository.findById(id);
         if (oldGrupo.isEmpty()){
             return Optional.empty();
         }
@@ -35,4 +39,6 @@ public class GrupoService extends UsuarioService{
     }
 
     public Usuario save (Grupo grupo){return grupoRepository.save(grupo);}
+
+    public void deleteById(Long id){grupoRepository.deleteById(id);}
 }

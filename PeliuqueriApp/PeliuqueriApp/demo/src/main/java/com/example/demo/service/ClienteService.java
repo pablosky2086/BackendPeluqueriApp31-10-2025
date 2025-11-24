@@ -22,7 +22,13 @@ public class ClienteService {
 
     public Optional<Cliente> findById(Long id) { return clienteRepository.findById(id); }
 
-    public List<Cliente> findByPartialName(String nombre) { return clienteRepository.findByNombreCompletoContaining(nombre); }
+    public List<Cliente> findByAlergenosParcial(String alergenos) {
+        return clienteRepository.findClientesByAlergenosParcial(alergenos);
+    }
+
+    public List<Cliente> findByObservacionesParcial(String observaciones) {
+        return clienteRepository.findClientesByObservacionesParcial(observaciones);
+    }
 
     public Optional<Cliente> update (Long id, Cliente cliente){
         Optional<Cliente> oldCliente = clienteRepository.findById(id);
@@ -43,4 +49,7 @@ public class ClienteService {
     }
 
     public Usuario save (Cliente cliente){return clienteRepository.save(cliente);}
+
+    public void deleteById(Long id){clienteRepository.deleteById(id);}
+
 }
