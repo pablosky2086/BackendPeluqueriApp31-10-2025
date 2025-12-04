@@ -39,6 +39,11 @@ public class ServicioController {
         return new ResponseEntity<Servicio>(servicio, HttpStatus.OK);
     }
 
+    @GetMapping("/servicio-por-tipo/{tipoId}")
+    public List<Servicio> findServiciosByTipoServicioId(@PathVariable Long tipoId){
+        return servicioService.findServiciosByTipoServicioId(tipoId);
+    }
+
     @GetMapping("/nombre/{nombre}")
     public List<Servicio> findServicioByNombreParcial(@PathVariable String nombre){return servicioService.findServiciosByNombreParcial(nombre);}
 

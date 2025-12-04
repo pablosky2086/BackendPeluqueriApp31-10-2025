@@ -44,4 +44,8 @@ public class ServicioService {
     public List<Servicio> findServiciosByNombreParcial(String nombre){
         return servicioRepository.findServicioByNombreParcial(nombre);
     }
+
+    public List<Servicio> findServiciosByTipoServicioId(Long tipoServicioId){
+        return servicioRepository.findServiciosByTipoServicioId(tipoServicioId);
+    }
 }
