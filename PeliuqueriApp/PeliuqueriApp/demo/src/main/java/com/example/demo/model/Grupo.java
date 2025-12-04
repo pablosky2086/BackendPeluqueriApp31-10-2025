@@ -14,9 +14,10 @@ import java.util.List;
 @Table(name = "grupos")
 public class Grupo extends Usuario{
     private String clase;
-    @Enumerated(EnumType.STRING)
-    private Turno turno;
-
+    // @Enumerated(EnumType.STRING)
+    // private Turno turno;
+    private String modulo = "";
+    private String aula = "";
 
     @ManyToMany
     @JoinTable(

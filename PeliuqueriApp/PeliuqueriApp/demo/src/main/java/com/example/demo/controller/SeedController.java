@@ -21,6 +21,7 @@ public class SeedController {
     public ResponseEntity<String> seedServicios() {
         seedService.seedTipoServicios();
         seedService.seedServicios();
+        seedService.seedGrupos();
         return ResponseEntity.ok("Servicios importados correctamente");
     }
 

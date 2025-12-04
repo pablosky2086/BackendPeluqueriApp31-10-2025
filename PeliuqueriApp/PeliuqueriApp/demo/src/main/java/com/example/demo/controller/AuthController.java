@@ -86,7 +86,9 @@ public class AuthController {
             Usuario usuario = registerUsuario(registerGrupoRequest);
             Grupo grupo = new Grupo(usuario);
             grupo.setRole(Role.ROLE_GRUPO);
+            /*
             grupo.setTurno(registerGrupoRequest.getTurno());
+            */
             grupo.setClase(registerGrupoRequest.getClase());
             grupoRepository.save(grupo);
             return ResponseEntity.ok(new MessageResponse("Email: " + grupo.getEmail() + " NombreCompleto: " + grupo.getNombreCompleto()));

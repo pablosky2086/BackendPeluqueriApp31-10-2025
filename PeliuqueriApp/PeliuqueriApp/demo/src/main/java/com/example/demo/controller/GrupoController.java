@@ -37,12 +37,14 @@ public class GrupoController {
         return new ResponseEntity<Grupo>(grupo, HttpStatus.OK);
     }
 
+    /*
     @GetMapping("/turno/{turno}")
     @PreAuthorize("hasRole('ADMIN')")
     public List<Grupo> getGruposByTurno(@PathVariable String turno){
         System.out.println("Turno recibido: " + turno);
         return grupoService.findByTurno(turno);
     }
+     */
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -51,6 +53,19 @@ public class GrupoController {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Grupo no encontrado"));
         return new ResponseEntity<Grupo>(updatedGrupo, HttpStatus.OK);
     }
+
+    @PostMapping("/{grupoId}/servicios/{servicioId}")
+    public ResponseEntity<Grupo> addServicio(
+            @PathVariable Long grupoId,
+            @PathVariable Long servicioId) {
+
+        boolean added = grupoService.addServicioToGrupo(grupoId, servicioId);
+
+        return added
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.notFound().build();
+    }
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")

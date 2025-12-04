@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,5 +23,6 @@ public class TipoServicio {
 
     //Relacion con Servicio OneToMany
     @OneToMany(mappedBy = "tipoServicio", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Servicio> servicios = new ArrayList<>();
 }

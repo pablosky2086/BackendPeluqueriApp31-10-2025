@@ -1,0 +1,97 @@
+[
+  {
+    "clase": "1GMEST",
+    "modulo": "Estética de Manos y Pies",
+    "aula": "C2.3"
+  },
+  {
+    "clase": "1 GMP",
+    "modulo": "Estética de Manos y Pies",
+    "aula": "C2.3"
+  },
+  {
+    "clase": "2 GM EST ACE",
+    "modulo": "ACE",
+    "aula": "C1.1"
+  },
+  {
+    "clase": "2GMEST",
+    "modulo": "TUA",
+    "aula": "C2.3"
+  },
+  {
+    "clase": "2FPBD",
+    "modulo": "DEP",
+    "aula": "C1.2"
+  },
+  {
+    "clase": "2FPBV",
+    "modulo": "DEP",
+    "aula": "C1.2"
+  },
+  {
+    "clase": "2GME",
+    "modulo": "DEP",
+    "aula": "C1.1"
+  },
+  {
+    "clase": "2GS EIB",
+    "modulo": "DEP AV",
+    "aula": "C1.1"
+  },
+  {
+    "clase": "2GS EIB",
+    "modulo": "BELLEZA MIRADA",
+    "aula": "C1.2"
+  },
+  {
+    "clase": "2GSAIPC",
+    "modulo": "BELLEZA MIRADA",
+    "aula": "C1.2"
+  },
+  {
+    "clase": "1GME",
+    "modulo": "Higiene",
+    "aula": "C1.1"
+  },
+  {
+    "clase": "2 GS EIB",
+    "modulo": "TEI",
+    "aula": "C1.1"
+  },
+  {
+    "clase": "1 GS EIB",
+    "modulo": "ME",
+    "aula": "C1.1"
+  },
+  {
+    "clase": "1 GS EIB",
+    "modulo": "Micro",
+    "aula": "C1.1"
+  },
+  {
+    "clase": "2 FPBD",
+    "modulo": "MAQ",
+    "aula": "C1.2"
+  },
+  {
+    "clase": "1 GME",
+    "modulo": "MAQ",
+    "aula": "C1.1"
+  },
+  {
+    "clase": "2 GS EDP",
+    "modulo": "OPT MAQ",
+    "aula": "C1.2"
+  },
+  {
+    "clase": "2 GME",
+    "modulo": "OPT MAQ",
+    "aula": "C1.2"
+  },
+  {
+    "clase": "2 GMP",
+    "modulo": "OPT MAQ",
+    "aula": "C1.2"
+  }
+]
