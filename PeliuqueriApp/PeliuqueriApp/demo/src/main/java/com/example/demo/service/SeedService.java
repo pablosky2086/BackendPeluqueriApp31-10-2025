@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Servicio;
+import com.example.demo.model.TipoServicio;
 import com.example.demo.repository.ServicioRepository;
+import com.example.demo.repository.TipoServicioRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,47 @@ public class SeedService {
 
     private final ServicioRepository servicioRepository;
     private final ObjectMapper objectMapper;
+    private final TipoServicioRepository tipoServicioRepository;
 
-    public SeedService(ServicioRepository servicioRepository, ObjectMapper objectMapper) {
+    public SeedService(ServicioRepository servicioRepository, ObjectMapper objectMapper, TipoServicioRepository tipoServicioRepository) {
         this.servicioRepository = servicioRepository;
         this.objectMapper = objectMapper;
+        this.tipoServicioRepository = tipoServicioRepository;
     }
+
+    public void seedTipoServicios() {
+        try {
+            InputStream inputStream = getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("seed/tipos.json");
+
+            if (inputStream == null) {
+                System.err.println("No se encontró seed/tipos.json");
+                return;
+            }
+
+            List<TipoServicio> tipos = objectMapper.readValue(
+                    inputStream,
+                    new TypeReference<List<TipoServicio>>(){}
+            );
+
+            if (tipos.isEmpty()) {
+                System.out.println("El JSON de tipos de servicio está vacío");
+                return;
+            }
+
+            // Evitar duplicados por nombre
+            long countBefore = tipoServicioRepository.count();
+            tipoServicioRepository.saveAll(tipos);
+            long countAfter = tipoServicioRepository.count();
+
+            System.out.println("Tipos de servicio importados: " + (countAfter - countBefore));
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al leer el archivo JSON de tipos de servicio", e);
+        }
+    }
+
 
     public void seedServicios() {
         try {

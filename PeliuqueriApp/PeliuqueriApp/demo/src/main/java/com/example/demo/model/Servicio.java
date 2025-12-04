@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -20,4 +22,13 @@ public class Servicio {
     private String descripcion;
     private Integer duracion;
     private Double precio;
+
+    //Relacion con TipoServicio ManyToOne
+    @ManyToOne
+    @JoinColumn(name = "tipo_servicio_id")
+    private TipoServicio tipoServicio;
+
+    @ManyToMany(mappedBy = "servicios")
+    private List<Grupo> grupos;
+
 }

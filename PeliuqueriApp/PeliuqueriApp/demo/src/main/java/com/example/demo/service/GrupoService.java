@@ -20,7 +20,7 @@ public class GrupoService{
 
     public Optional<Grupo> findById(Long id) { return grupoRepository.findById(id); }
 
-    public List<Grupo> findByTurnoParcial(String turno) {
+    public List<Grupo> findByTurno(String turno) {
         System.out.println("Buscando grupos con turno que contiene: " + turno);
         Turno t = Turno.valueOf(turno.toUpperCase());
         System.out.println("Turno convertido: " + t);

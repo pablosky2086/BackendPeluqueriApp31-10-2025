@@ -1,0 +1,34 @@
+[
+  {
+    "nombre": "Manicura y Pedicura",
+    "url_img": "/img/servicios/manicura_pedicura.png"
+  },
+  {
+    "nombre": "Depilación",
+    "url_img": "/img/servicios/depilacion.png"
+  },
+  {
+    "nombre": "Cejas y Pestañas",
+    "url_img": "/img/servicios/cejas_pestanas.png"
+  },
+  {
+    "nombre": "Tratamientos Faciales",
+    "url_img": "/img/servicios/faciales.png"
+  },
+  {
+    "nombre": "Tratamientos Corporales",
+    "url_img": "/img/servicios/corporales.png"
+  },
+  {
+    "nombre": "Masajes",
+    "url_img": "/img/servicios/masajes.png"
+  },
+  {
+    "nombre": "Maquillaje",
+    "url_img": "/img/servicios/maquillaje.png"
+  },
+  {
+    "nombre": "Micropigmentación",
+    "url_img": "/img/servicios/micropigmentacion.png"
+  }
+]

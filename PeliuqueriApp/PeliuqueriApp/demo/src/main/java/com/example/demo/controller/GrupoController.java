@@ -41,7 +41,7 @@ public class GrupoController {
     @PreAuthorize("hasRole('ADMIN')")
     public List<Grupo> getGruposByTurno(@PathVariable String turno){
         System.out.println("Turno recibido: " + turno);
-        return grupoService.findByTurnoParcial(turno);
+        return grupoService.findByTurno(turno);
     }
 
     @PutMapping("/{id}")

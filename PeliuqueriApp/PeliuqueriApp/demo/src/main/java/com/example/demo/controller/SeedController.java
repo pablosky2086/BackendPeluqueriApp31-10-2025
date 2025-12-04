@@ -15,9 +15,14 @@ public class SeedController {
         this.seedService = seedService;
     }
 
+
+
     @PostMapping("/servicios")
     public ResponseEntity<String> seedServicios() {
+        seedService.seedTipoServicios();
         seedService.seedServicios();
         return ResponseEntity.ok("Servicios importados correctamente");
     }
+
+
 }
