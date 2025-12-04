@@ -71,4 +71,21 @@ public class GrupoService{
 
         return true;
     }
+
+    public boolean removeServicioFromGrupo(Long grupoId, Long servicioId) {
+        Optional<Grupo> grupoOpt = grupoRepository.findById(grupoId);
+        Optional<Servicio> servicioOpt = servicioRepository.findById(servicioId);
+
+        if (grupoOpt.isEmpty() || servicioOpt.isEmpty()) {
+            return false; // Grupo or Servicio not found
+        }
+
+        Grupo grupo = grupoOpt.get();
+        Servicio servicio = servicioOpt.get();
+
+        grupo.getServicios().remove(servicio);
+        grupoRepository.save(grupo);
+
+        return true;
+    }
 }

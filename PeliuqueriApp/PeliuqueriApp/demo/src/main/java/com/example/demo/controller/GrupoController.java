@@ -74,4 +74,16 @@ public class GrupoController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/{grupoId}/servicios/{servicioId}")
+    public ResponseEntity<Grupo> removeServicio(
+            @PathVariable Long grupoId,
+            @PathVariable Long servicioId) {
+
+        boolean removed = grupoService.removeServicioFromGrupo(grupoId, servicioId);
+
+        return removed
+                ? ResponseEntity.ok().build()
+                : ResponseEntity.notFound().build();
+    }
+
 }
