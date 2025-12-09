@@ -30,7 +30,10 @@ public class ServicioController {
             @ApiResponse(responseCode = "401", description = "No autorizado"),
     })
     @GetMapping("/")
-    public List<Servicio> getAllServicios(){return servicioService.findAll();}
+    public List<Servicio> getAllServicios(){
+        System.out.println("Obteniendo todos los servicios...");
+        return servicioService.findAll();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Servicio> findServicioById(@PathVariable Long id){

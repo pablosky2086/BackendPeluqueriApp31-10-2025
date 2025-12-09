@@ -21,6 +21,7 @@ public class TipoServicioController {
     // GET ALL
     @GetMapping("/")
     public List<TipoServicio> getAll() {
+        System.out.println("Obteniendo todos los tipos de servicio...");
         return tipoServicioService.findAll();
     }
 
