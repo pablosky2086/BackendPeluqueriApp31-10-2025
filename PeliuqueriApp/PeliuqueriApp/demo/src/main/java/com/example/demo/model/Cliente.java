@@ -5,12 +5,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "clientes")
+@ToString(callSuper = true)
 public class Cliente extends Usuario{
     private String telefono;
     private String observaciones;

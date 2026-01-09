@@ -2,15 +2,12 @@ package com.example.demo.controller;
 
 
 import com.example.demo.model.Cliente;
-import com.example.demo.model.Servicio;
+import com.example.demo.service.AuthService;
 import com.example.demo.service.ClienteService;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,9 +19,11 @@ import java.util.Optional;
 public class ClienteController {
 
     private final ClienteService clienteService;
+    private final AuthService authService;
 
-    public ClienteController(ClienteService clienteService) {
+    public ClienteController(ClienteService clienteService, AuthService authService) {
         this.clienteService = clienteService;
+        this.authService = authService;
     }
 
     @GetMapping("/")
@@ -35,19 +34,9 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> getClienteByid(@PathVariable Long id) {
-        // Obtener el objeto Authentication
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // Obtener los detalles del usuario autenticado
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        // Obtener el rol y el email del usuario autenticado
-        String userRole = userDetails.getAuthorities().stream().findFirst().map(g -> g.getAuthority()).orElse(null);
-        String userEmail = userDetails.getUsername();
-        // En caso de que el rol sea CLIENTE, verificar que el id del cliente solicitado coincida con el email del usuario autenticado
-        if (userRole.equals("ROLE_CLIENTE")) {
-            Optional<Cliente> clienteOpt = clienteService.findById(id);
-            if (clienteOpt.isEmpty() || !clienteOpt.get().getEmail().equals(userEmail)) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acceso denegado");
-            }
+        // Si el usuario no es admin o grupo, solo puede acceder a su propio cliente
+        if (!authService.isAdmin() && !authService.isGrupo() && !authService.isOwnerOfCliente(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para acceder a este recurso");
         }
         Cliente cliente = clienteService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente no encontrado"));
@@ -70,12 +59,18 @@ public class ClienteController {
     public ResponseEntity<Cliente> updateCliente(@PathVariable Long id, @RequestBody Cliente cliente){
         Cliente uppdatedCliente = clienteService.update(id,cliente)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente no encontrado"));
+        if (!authService.isAdmin() && !authService.isGrupo() && !authService.isOwnerOfCliente(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para acceder a este recurso");
+        }
         return new ResponseEntity<Cliente>(uppdatedCliente, HttpStatus.OK);
     }
     
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Response> deleteCliente(@PathVariable long id){
+        if (!authService.isAdmin() && !authService.isGrupo() && !authService.isOwnerOfCliente(id)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para acceder a este recurso");
+        }
         clienteService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

@@ -4,6 +4,6 @@ import lombok.Data;
 @Data
 public class RegisterGrupoRequest extends RegisterRequest{
     private String clase;
-    private String modulo = "";
-    private String aula = "";
+    /*private String modulo = "";
+    private String aula = "";*/
 }

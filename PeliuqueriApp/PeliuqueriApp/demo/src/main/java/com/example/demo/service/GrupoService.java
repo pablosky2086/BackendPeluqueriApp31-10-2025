@@ -43,8 +43,8 @@ public class GrupoService{
         if (grupo.getEmail()!=null) newGrupo.setEmail(grupo.getEmail());
         if (grupo.getContrasena()!=null) newGrupo.setContrasena(grupo.getContrasena());
         if (grupo.getClase()!=null) newGrupo.setClase(grupo.getClase());
-        if (grupo.getModulo()!=null) newGrupo.setModulo(grupo.getModulo());
-        if (grupo.getAula()!=null) newGrupo.setAula(grupo.getAula());
+        /*if (grupo.getModulo()!=null) newGrupo.setModulo(grupo.getModulo());
+        if (grupo.getAula()!=null) newGrupo.setAula(grupo.getAula());*/
 
         grupoRepository.save(newGrupo);
 

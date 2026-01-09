@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -12,13 +13,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "grupos")
+@ToString(callSuper = true)
 public class Grupo extends Usuario{
     private String clase;
     // @Enumerated(EnumType.STRING)
     // private Turno turno;
-    private String modulo = "";
-    private String aula = "";
+    /*private String modulo = "";
+    private String aula = "";*/
 
+    // Relacion con Agenda OneToMany
+    @OneToMany(mappedBy = "grupo")
+    private List<Agenda> agendas;
+
+    // Relacion con Servicio ManyToMany
     @ManyToMany
     @JoinTable(
         name = "grupo_servicio",

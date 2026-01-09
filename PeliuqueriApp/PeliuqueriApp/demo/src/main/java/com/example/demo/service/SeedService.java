@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Grupo;
+import com.example.demo.model.Role;
 import com.example.demo.model.Servicio;
 import com.example.demo.model.TipoServicio;
+import com.example.demo.payload.request.AgendaRequest;
+import com.example.demo.repository.AgendaRepository;
 import com.example.demo.repository.GrupoRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.TipoServicioRepository;
@@ -20,12 +23,41 @@ public class SeedService {
     private final ObjectMapper objectMapper;
     private final TipoServicioRepository tipoServicioRepository;
     private final GrupoRepository grupoRepository;
+    private final AgendaService agendaService;
 
-    public SeedService(ServicioRepository servicioRepository, ObjectMapper objectMapper, TipoServicioRepository tipoServicioRepository, GrupoRepository grupoRepository) {
+    public SeedService(ServicioRepository servicioRepository, ObjectMapper objectMapper, TipoServicioRepository tipoServicioRepository, GrupoRepository grupoRepository, AgendaRepository agendaRepository, AgendaService agendaService) {
         this.servicioRepository = servicioRepository;
         this.objectMapper = objectMapper;
         this.tipoServicioRepository = tipoServicioRepository;
         this.grupoRepository = grupoRepository;
+        this.agendaService = agendaService;
+    }
+
+    public void seedAgenda() {
+        try {
+            InputStream inputStream = getClass()
+                    .getClassLoader()
+                    .getResourceAsStream("seed/agenda.json");
+            if (inputStream == null) {
+                System.err.println("No se encontró seed/agenda.json");
+                return;
+            }
+            List<AgendaRequest> requests = objectMapper.readValue(
+                    inputStream,
+                    new TypeReference<List<AgendaRequest>>(){}
+            );
+            if (requests.isEmpty()) {
+                System.out.println("El JSON de agenda está vacío");
+                return;
+            }
+
+            for (AgendaRequest request : requests) {
+                agendaService.createAgendasParaUnTiempo(request, 50);
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error al leer el archivo JSON de agenda", e);
+        }
     }
 
     public void seedTipoServicios() {
@@ -66,10 +98,10 @@ public class SeedService {
         try {
             InputStream inputStream = getClass()
                     .getClassLoader()
-                    .getResourceAsStream("seed/data.json");
+                    .getResourceAsStream("seed/servicios.json");
 
             if (inputStream == null) {
-                System.err.println("No se encontró seed/data.json");
+                System.err.println("No se encontró seed/servicios.json");
                 return;
             }
 
@@ -112,6 +144,14 @@ public class SeedService {
                     inputStream,
                     new TypeReference<List<Grupo>>(){}
             );
+
+            grupos.forEach(grupo -> {
+                // Asignar role GRUPO a cada grupo
+                grupo.setRole(Role.ROLE_GRUPO);
+                grupo.setNombreCompleto(grupo.getClase());
+                grupo.setContrasena("1234");
+                grupo.setEmail("grupo" + grupo.getClase().toLowerCase() + "@gmail.com");
+            });
 
             if (grupos.isEmpty()) {
                 System.out.println("El JSON de grupos está vacío");

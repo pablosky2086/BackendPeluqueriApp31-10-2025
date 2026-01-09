@@ -1,0 +1,461 @@
+[
+  {
+    "nombre": "Manicura exprés (sin esmaltar)",
+    "descripcion": "Manicura rápida sin esmaltado.",
+    "duracion": 45,
+    "precio": 2,
+    "tipoServicio": {
+      "id": 1
+    }
+  },
+  {
+    "nombre": "Manicura completa esmaltar semipermanente",
+    "descripcion": "Manicura con aplicación de esmalte semipermanente.",
+    "duracion": 90,
+    "precio": 5,
+    "tipoServicio": {
+      "id": 1
+    }
+  },
+  {
+    "nombre": "Pedicura más esmaltado semipermanente",
+    "descripcion": "Pedicura completa con esmaltado semipermanente.",
+    "duracion": 90,
+    "precio": 5,
+    "tipoServicio": {
+      "id": 1
+    }
+  },
+  {
+    "nombre": "Tratamiento parafina",
+    "descripcion": "Tratamiento hidratante con parafina.",
+    "duracion": 60,
+    "precio": 2,
+    "tipoServicio": {
+      "id": 1
+    }
+  },
+  {
+    "nombre": "Uñas artificiales",
+    "descripcion": "Colocación de uñas artificiales.",
+    "duracion": 180,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 1
+    }
+  },
+  {
+    "nombre": "Manicura semipermanente",
+    "descripcion": "Manicura con esmalte semipermanente.",
+    "duracion": 120,
+    "precio": 5,
+    "tipoServicio": {
+      "id": 1
+    }
+  },
+  {
+    "nombre": "Manicura normal",
+    "descripcion": "Manicura básica con limado y esmaltado.",
+    "duracion": 60,
+    "precio": 2,
+    "tipoServicio": {
+      "id": 1
+    }
+  },
+  {
+    "nombre": "Depilación facial completa",
+    "descripcion": "Depilación de labio, cejas, mentón, patillas, orejas y nariz.",
+    "duracion": 30,
+    "precio": 3,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Diseño de cejas",
+    "descripcion": "Diseño profesional de cejas.",
+    "duracion": 30,
+    "precio": 2,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Depilación de axilas",
+    "descripcion": "Depilación completa de axilas.",
+    "duracion": 20,
+    "precio": 4,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Depilación de brazos",
+    "descripcion": "Depilación completa de brazos.",
+    "duracion": 30,
+    "precio": 6,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Depilación de medias piernas",
+    "descripcion": "Depilación de medias piernas.",
+    "duracion": 30,
+    "precio": 8,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Depilación de piernas completas",
+    "descripcion": "Depilación integral de piernas.",
+    "duracion": 60,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Depilación de ingle",
+    "descripcion": "Depilación clásica de ingles.",
+    "duracion": 30,
+    "precio": 4,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Depilación de ingle brasileña",
+    "descripcion": "Depilación estilo brasileño.",
+    "duracion": 45,
+    "precio": 5,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Depilación de ingle integral",
+    "descripcion": "Depilación completa de la zona íntima.",
+    "duracion": 45,
+    "precio": 6,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Depilación de espalda",
+    "descripcion": "Depilación completa de la espalda.",
+    "duracion": 45,
+    "precio": 4,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Depilación de abdomen",
+    "descripcion": "Depilación de la zona abdominal.",
+    "duracion": 30,
+    "precio": 3,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Pack de depilación completa",
+    "descripcion": "Incluye cejas, labio, axilas, piernas completas e ingles.",
+    "duracion": 90,
+    "precio": 18,
+    "tipoServicio": {
+      "id": 2
+    }
+  },
+  {
+    "nombre": "Lifting pestañas",
+    "descripcion": "Lifting de pestañas con rizado duradero.",
+    "duracion": 45,
+    "precio": 8,
+    "tipoServicio": {
+      "id": 3
+    }
+  },
+  {
+    "nombre": "Laminado cejas",
+    "descripcion": "Moldeado y fijación semipermanente de cejas.",
+    "duracion": 45,
+    "precio": 8,
+    "tipoServicio": {
+      "id": 3
+    }
+  },
+  {
+    "nombre": "Tinte Pestañas",
+    "descripcion": "Tinte semipermanente para pestañas.",
+    "duracion": 30,
+    "precio": 5,
+    "tipoServicio": {
+      "id": 3
+    }
+  },
+  {
+    "nombre": "Lifting + Tinte Pestañas",
+    "descripcion": "Tratamiento combinado lifting y tinte de pestañas",
+    "duracion": 60,
+    "precio": 12,
+    "tipoServicio": {
+      "id": 3
+    }
+  },
+  {
+    "nombre": "Drenaje linfático facial",
+    "descripcion": "Drenaje facial para mejorar circulación.",
+    "duracion": 60,
+    "precio": 3,
+    "tipoServicio": {
+      "id": 4
+    }
+  },
+  {
+    "nombre": "Drenaje linfático corporal",
+    "descripcion": "Drenaje corporal completo.",
+    "duracion": 90,
+    "precio": 6,
+    "tipoServicio": {
+      "id": 5
+    }
+  },
+  {
+    "nombre": "Drenaje linfático completo",
+    "descripcion": "Drenaje total del sistema linfático.",
+    "duracion": 150,
+    "precio": 8,
+    "tipoServicio": {
+      "id": 4
+    }
+  },
+  {
+    "nombre": "Higiene Profunda facial",
+    "descripcion": "Limpieza facial completa y profunda.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 4
+    }
+  },
+  {
+    "nombre": "Tratamiento Hidratación Facial",
+    "descripcion": "Hidratación profunda del rostro.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 4
+    }
+  },
+  {
+    "nombre": "Tratamiento Antienvejecimiento Facial",
+    "descripcion": "Tratamiento antiage con activos específicos.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 4
+    }
+  },
+  {
+    "nombre": "Tratamiento Vitamina C Facial",
+    "descripcion": "Tratamiento iluminador con vitamina C.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 4
+    }
+  },
+  {
+    "nombre": "Tratamiento pieles grasas Facial",
+    "descripcion": "Tratamiento específico para piel grasa.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 4
+    }
+  },
+  {
+    "nombre": "Tratamiento despigmentante Facial",
+    "descripcion": "Tratamiento para manchas y tono irregular.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 4
+    }
+  },
+  {
+    "nombre": "Tratamiento para bolsas y ojeras Facial",
+    "descripcion": "Tratamiento para mejorar bolsas y ojeras.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 4
+    }
+  },
+  {
+    "nombre": "Exfoliación corporal",
+    "descripcion": "Exfoliación de todo el cuerpo.",
+    "duracion": 60,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 5
+    }
+  },
+  {
+    "nombre": "Hidratación corporal",
+    "descripcion": "Hidratación profunda del cuerpo.",
+    "duracion": 60,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 5
+    }
+  },
+  {
+    "nombre": "Tratamiento anticelulítico corporal",
+    "descripcion": "Tratamiento anticelulítico intensivo.",
+    "duracion": 90,
+    "precio": 20,
+    "tipoServicio": {
+      "id": 5
+    }
+  },
+  {
+    "nombre": "Tratamiento reductor corporal",
+    "descripcion": "Tratamiento para reducción de volumen.",
+    "duracion": 90,
+    "precio": 20,
+    "tipoServicio": {
+      "id": 5
+    }
+  },
+  {
+    "nombre": "Tratamiento para la mejora de la circulación corporal",
+    "descripcion": "Mejora de la circulación corporal.",
+    "duracion": 90,
+    "precio": 20,
+    "tipoServicio": {
+      "id": 5
+    }
+  },
+  {
+    "nombre": "Tratamiento para la fatiga emocional y el estrés corporal",
+    "descripcion": "Tratamiento relajante para estrés y fatiga.",
+    "duracion": 90,
+    "precio": 20,
+    "tipoServicio": {
+      "id": 5
+    }
+  },
+  {
+    "nombre": "Masaje craneofacial",
+    "descripcion": "Masaje relajante de cabeza y cuello.",
+    "duracion": 45,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 6
+    }
+  },
+  {
+    "nombre": "Masaje espalda",
+    "descripcion": "Masaje terapéutico de espalda.",
+    "duracion": 45,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 6
+    }
+  },
+  {
+    "nombre": "Masaje circulatorio piernas",
+    "descripcion": "Mejora de la circulación en piernas.",
+    "duracion": 45,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 6
+    }
+  },
+  {
+    "nombre": "Masaje con material complementario zonal",
+    "descripcion": "Masaje con accesorios especiales.",
+    "duracion": 45,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 6
+    }
+  },
+  {
+    "nombre": "Masaje anticelulítico zonal",
+    "descripcion": "Masaje anticelulítico localizado.",
+    "duracion": 45,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 6
+    }
+  },
+  {
+    "nombre": "Masaje reductor zonal",
+    "descripcion": "Masaje reductor localizado.",
+    "duracion": 45,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 6
+    }
+  },
+  {
+    "nombre": "Masaje relajante corporal completo",
+    "descripcion": "Masaje relajante de cuerpo entero.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 6
+    }
+  },
+  {
+    "nombre": "Masaje completo a 4 manos",
+    "descripcion": "Masaje realizado por dos terapeutas.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 6
+    }
+  },
+  {
+    "nombre": "Masaje del mundo corporal completo",
+    "descripcion": "Masaje inspirado en técnicas del mundo.",
+    "duracion": 90,
+    "precio": 15,
+    "tipoServicio": {
+      "id": 6
+    }
+  },
+  {
+    "nombre": "Micropigmentación (a partir de abril)",
+    "descripcion": "Micropigmentación estética avanzada.",
+    "duracion": 240,
+    "precio": 50,
+    "tipoServicio": {
+      "id": 8
+    }
+  },
+  {
+    "nombre": "Maquillaje de día con hidratación facial",
+    "descripcion": "Maquillaje ligero con hidratación previa.",
+    "duracion": 90,
+    "precio": 5,
+    "tipoServicio": {
+      "id": 7
+    }
+  },
+  {
+    "nombre": "Maquillaje de Día Tarde o Noche",
+    "descripcion": "Maquillaje adaptado a diferentes ocasiones.",
+    "duracion": 90,
+    "precio": 10,
+    "tipoServicio": {
+      "id": 7
+    }
+  }
+]

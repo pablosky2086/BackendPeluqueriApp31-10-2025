@@ -2,10 +2,7 @@ package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Generated;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "servicios")
-
+@ToString(callSuper = true)
 public class Servicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +20,11 @@ public class Servicio {
     private String descripcion;
     private Integer duracion;
     private Double precio;
+
+    //Relacion con Agenda OneToMany
+    @OneToMany(mappedBy = "servicio")
+    @JsonIgnore
+    private List<Agenda> agendas;
 
     //Relacion con TipoServicio ManyToOne
     @ManyToOne
