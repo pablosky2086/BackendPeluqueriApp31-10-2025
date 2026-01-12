@@ -10,8 +10,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class NewCitaRequest {
-    private String fechaHora;
     private Long clienteId;
-    private Long servicioId;
-    private Long grupoId;
+    private Long agendaId;
+    /* El parametro fechaHoraInicio es opcional */
+    private String fechaHoraInicio;
 }

@@ -1,0 +1,5 @@
+Cuando entras en la app, seleccionas un servicio, cuando seleccionas un servicio,
+te lleva a una pantalla donde puedes ver el calendario a ese servicio,
+cuando ves el calendario y eligues el dia veras las horas disponibles,
+cuando selecciones la hora y le des a guardar buscara el hueco con esa informacion,
+y hara una peticion con el hueco(agenda) con el cliente loggeado.

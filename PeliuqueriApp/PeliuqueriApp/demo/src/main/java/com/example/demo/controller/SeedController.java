@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Admin;
+import com.example.demo.model.Role;
 import com.example.demo.model.Usuario;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.AgendaService;
 import com.example.demo.service.DatabaseResetService;
 import com.example.demo.service.SeedService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,11 +18,13 @@ public class SeedController {
     private final SeedService seedService;
     private final DatabaseResetService databaseResetService;
     private final AdminService adminService;
+    private final PasswordEncoder passwordEncoder;
 
-    public SeedController(SeedService seedService, AgendaService agendaService, DatabaseResetService databaseResetService, AdminService adminService) {
+    public SeedController(SeedService seedService, AgendaService agendaService, DatabaseResetService databaseResetService, AdminService adminService, PasswordEncoder passwordEncoder) {
         this.seedService = seedService;
         this.databaseResetService = databaseResetService;
         this.adminService = adminService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -31,8 +35,9 @@ public class SeedController {
         Usuario adminUser = new Usuario();
         adminUser.setNombreCompleto("admin");
         adminUser.setEmail("admin@testmail.com");
-        adminUser.setContrasena("pass");
+        adminUser.setContrasena(passwordEncoder.encode("pass"));
         Admin admin = new Admin(adminUser);
+        admin.setRole(Role.ROLE_ADMIN);
         admin.setEspecialidad("Super Admin");
         adminService.save(admin);
         seedService.seedTipoServicios();

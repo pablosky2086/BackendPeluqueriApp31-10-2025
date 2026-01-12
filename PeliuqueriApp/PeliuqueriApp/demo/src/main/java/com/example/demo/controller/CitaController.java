@@ -67,26 +67,39 @@ public class CitaController {
         return citaService.getCitasByServicio(servicioId);
     }
 
+    // Obtener citas entre fechas
+    @GetMapping("/fechas")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GRUPO')")
+    public List<Cita> getCitasEntreFechas(
+            @RequestParam("desde") String desde,
+            @RequestParam("hasta") String hasta) {
+        return citaService.getCitasEntreFechas(
+                java.time.LocalDateTime.parse(desde),
+                java.time.LocalDateTime.parse(hasta));
+    }
+
+    // Obtener citas de un grupo entre fechas
+    @GetMapping("/grupo/{grupoId}/fechas")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GRUPO')")
+    public List<Cita> getCitasGrupoEntreFechas(
+            @PathVariable Long grupoId,
+            @RequestParam("desde") String desde,
+            @RequestParam("hasta") String hasta) {
+        return citaService.getCitasGrupoEntreFechas(
+                grupoId,
+                java.time.LocalDateTime.parse(desde),
+                java.time.LocalDateTime.parse(hasta));
+    }
+
     // POST - Crear nueva cita
     @PostMapping("/")
     public ResponseEntity<Cita> create(@RequestBody NewCitaRequest request) {
-        System.out.println("La peticion de crear cita es: " + request);
+        System.out.println("Controller: Creando nueva cita para el cliente ID: " + request.getClienteId());
         if (!authService.isAdmin() && !authService.isGrupo() && request.getClienteId() != authService.getCurrentUserId()){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para crear una cita para este cliente");
         }
         Cita nuevaCita = citaService.create(request);
         return new ResponseEntity<>(nuevaCita, HttpStatus.CREATED);
-    }
-
-    // PUT - Actualizar cita
-    @PutMapping("/{id}")
-    public ResponseEntity<Cita> update(@PathVariable Long id, @RequestBody Cita cita) {
-        if (!authService.isAdmin() && !authService.isGrupo() && cita.getCliente().getId() != authService.getCurrentUserId()){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para actualizar esta cita");
-        }
-        return citaService.update(id, cita)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 
     // DELETE - Cancelar una cita

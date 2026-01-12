@@ -16,31 +16,23 @@ public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDateTime fechaHora;
+
+    private LocalDateTime fechaHoraInicio;
 
     // Una cita pertenece a un cliente
     @ManyToOne(optional = false)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    // Una cita pertenece a un servicio
+    // Una cita tiene una agenda
     @ManyToOne(optional = false)
-    @JoinColumn(name = "servicio_id", nullable = false)
-    private Servicio servicio;
+    @JoinColumn(name = "agenda_id", nullable = false)
+    private Agenda agenda;
 
-    // Una cita pertenece a un grupo (si tu modelo lo requiere)
-    @ManyToOne
-    @JoinColumn(name = "grupo_id")
-    private Grupo grupo;
 
-    public Cita(LocalDateTime fechaHora, Servicio servicio, Cliente cliente, Grupo grupo) {
-        this.fechaHora = fechaHora;
-        this.servicio = servicio;
+    public Cita(LocalDateTime inicio, Agenda agenda, Cliente cliente) {
+        this.fechaHoraInicio = inicio;
+        this.agenda = agenda;
         this.cliente = cliente;
-        this.grupo = grupo;
-    }
-
-    public LocalDateTime getHoraFinal() {
-        return fechaHora.plusMinutes(servicio.getDuracion());
     }
 }

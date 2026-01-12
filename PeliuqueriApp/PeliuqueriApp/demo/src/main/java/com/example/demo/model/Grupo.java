@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +11,7 @@ import lombok.ToString;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +26,7 @@ public class Grupo extends Usuario{
 
     // Relacion con Agenda OneToMany
     @OneToMany(mappedBy = "grupo")
+    @JsonIgnore
     private List<Agenda> agendas;
 
     // Relacion con Servicio ManyToMany

@@ -1,13 +1,17 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +29,9 @@ public class Agenda {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "grupo_id", nullable = false)
     Grupo grupo;
+    @OneToMany(mappedBy = "agenda")
+    @JsonIgnore
+    private List<Cita> citas;
 
     public Agenda(LocalDateTime horaInicio, LocalDateTime horaFin, Servicio servicio, Grupo grupo, String aula) {
         this.horaInicio = horaInicio;

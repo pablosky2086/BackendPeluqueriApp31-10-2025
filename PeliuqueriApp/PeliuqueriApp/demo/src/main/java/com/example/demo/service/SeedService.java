@@ -11,6 +11,7 @@ import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.TipoServicioRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -24,13 +25,15 @@ public class SeedService {
     private final TipoServicioRepository tipoServicioRepository;
     private final GrupoRepository grupoRepository;
     private final AgendaService agendaService;
+    private final PasswordEncoder passwordEncoder;
 
-    public SeedService(ServicioRepository servicioRepository, ObjectMapper objectMapper, TipoServicioRepository tipoServicioRepository, GrupoRepository grupoRepository, AgendaRepository agendaRepository, AgendaService agendaService) {
+    public SeedService(ServicioRepository servicioRepository, ObjectMapper objectMapper, TipoServicioRepository tipoServicioRepository, GrupoRepository grupoRepository, AgendaRepository agendaRepository, AgendaService agendaService, PasswordEncoder passwordEncoder) {
         this.servicioRepository = servicioRepository;
         this.objectMapper = objectMapper;
         this.tipoServicioRepository = tipoServicioRepository;
         this.grupoRepository = grupoRepository;
         this.agendaService = agendaService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void seedAgenda() {
@@ -149,7 +152,7 @@ public class SeedService {
                 // Asignar role GRUPO a cada grupo
                 grupo.setRole(Role.ROLE_GRUPO);
                 grupo.setNombreCompleto(grupo.getClase());
-                grupo.setContrasena("1234");
+                grupo.setContrasena(passwordEncoder.encode("1234"));
                 grupo.setEmail("grupo" + grupo.getClase().toLowerCase() + "@gmail.com");
             });
 

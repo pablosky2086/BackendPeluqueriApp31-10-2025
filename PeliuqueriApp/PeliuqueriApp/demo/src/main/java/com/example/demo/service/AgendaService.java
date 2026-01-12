@@ -26,6 +26,7 @@ public class AgendaService {
     // Metodos GET
     // Obtener todas las agendas
     public List<Agenda> findAll() {
+        System.out.println("Servicio: Obteniendo todas las agendas...");
         return agendaRepository.findAll();
     }
     // Obtener una agenda por ID
@@ -87,4 +88,28 @@ public class AgendaService {
         System.out.println("Se han creado " + numeroDeAgendas + " agendas semanalmente a partir de la fecha " + request.getHoraInicio());
     }
 
+    public List<Agenda> search(Long servicio, Long grupo, LocalDateTime desde, LocalDateTime hasta) {
+        List<Agenda> agendas = agendaRepository.findAll();
+        if (servicio != null) {
+            agendas = agendas.stream()
+                    .filter(a -> a.getServicio().getId().equals(servicio))
+                    .toList();
+        }
+        if (grupo != null) {
+            agendas = agendas.stream()
+                    .filter(a -> a.getGrupo().getId().equals(grupo))
+                    .toList();
+        }
+        if (desde != null) {
+            agendas = agendas.stream()
+                    .filter(a -> !a.getHoraInicio().isBefore(desde))
+                    .toList();
+        }
+        if (hasta != null) {
+            agendas = agendas.stream()
+                    .filter(a -> !a.getHoraFin().isAfter(hasta))
+                    .toList();
+        }
+        return agendas;
+    }
 }
