@@ -15,6 +15,7 @@ public class DatabaseResetService {
     public void resetDatabase() {
         entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0").executeUpdate();
 
+        entityManager.createNativeQuery("TRUNCATE TABLE citas").executeUpdate();
         entityManager.createNativeQuery("TRUNCATE TABLE agendas").executeUpdate();
         entityManager.createNativeQuery("TRUNCATE TABLE servicios").executeUpdate();
         entityManager.createNativeQuery("TRUNCATE TABLE grupos").executeUpdate();

@@ -91,13 +91,16 @@ public class CitaController {
                 java.time.LocalDateTime.parse(hasta));
     }
 
+    // Obtener citas por agenda
+    @GetMapping("/agenda/{agendaId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GRUPO')")
+    public List<Cita> getByAgenda(@PathVariable Long agendaId) {
+        return citaService.getCitasByAgenda(agendaId);
+    }
+
     // POST - Crear nueva cita
     @PostMapping("/")
     public ResponseEntity<Cita> create(@RequestBody NewCitaRequest request) {
-        System.out.println("Controller: Creando nueva cita para el cliente ID: " + request.getClienteId());
-        if (!authService.isAdmin() && !authService.isGrupo() && request.getClienteId() != authService.getCurrentUserId()){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permiso para crear una cita para este cliente");
-        }
         Cita nuevaCita = citaService.create(request);
         return new ResponseEntity<>(nuevaCita, HttpStatus.CREATED);
     }

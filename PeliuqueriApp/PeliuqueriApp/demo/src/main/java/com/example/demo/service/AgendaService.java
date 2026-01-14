@@ -3,10 +3,14 @@ package com.example.demo.service;
 import com.example.demo.model.Agenda;
 import com.example.demo.model.Grupo;
 import com.example.demo.model.Servicio;
+import com.example.demo.payload.DTOs.AgendaResponseDTO;
 import com.example.demo.payload.request.AgendaRequest;
 import com.example.demo.repository.AgendaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -25,28 +29,33 @@ public class AgendaService {
 
     // Metodos GET
     // Obtener todas las agendas
-    public List<Agenda> findAll() {
+    public List<AgendaResponseDTO> findAll() {
         System.out.println("Servicio: Obteniendo todas las agendas...");
-        return agendaRepository.findAll();
+        return agendaRepository.findAll().stream().map(AgendaService::toDTO).toList();
     }
     // Obtener una agenda por ID
-    public Optional<Agenda> findById(Long id) {
-        return agendaRepository.findById(id);
+    public Optional<AgendaResponseDTO> findById(Long id) {
+        Optional<Agenda> agendaOpt = agendaRepository.findById(id);
+        return agendaOpt.map(AgendaService::toDTO);
     }
 
     // Obtener agendas por grupo o servicio
-    public List<Agenda> getAgendasByGrupo(Long grupoId) {
-        return agendaRepository.findByGrupoId(grupoId);
+    public List<AgendaResponseDTO> getAgendasByGrupo(Long grupoId) {
+        return agendaRepository.findByGrupoId(grupoId).stream().map(AgendaService::toDTO).toList();
     }
-    public List<Agenda> getAgendasByServicio(Long servicioId) {
-        return agendaRepository.findByServicioId(servicioId);
+    public List<AgendaResponseDTO> getAgendasByServicio(Long servicioId) {
+        return agendaRepository.findByServicioId(servicioId).stream().map(AgendaService::toDTO).toList();
     }
 
     // Obtener agendas por grupo y servicio
 
-    public List<Agenda> getAgendasByGrupoAndServicio(Long grupoId, Long servicioId) {
-        return agendaRepository.findByGrupoIdAndServicioId(grupoId, servicioId);
+    public List<AgendaResponseDTO> getAgendasByGrupoAndServicio(Long grupoId, Long servicioId) {
+        return agendaRepository.findByGrupoIdAndServicioId(grupoId, servicioId).stream().map(AgendaService::toDTO).toList();
     }
+
+
+
+
 
     // Metodos POST
     // Crear una nueva agenda
@@ -64,9 +73,9 @@ public class AgendaService {
     public Agenda create(AgendaRequest request){
         System.out.println("Creando nueva agenda con los datos: " + request);
         Grupo grupo = grupoService.findById(request.getGrupoId())
-                .orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Grupo no encontrado"));
         Servicio servicio = servicioService.findById(request.getServicioId())
-                .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Servicio no encontrado"));
         LocalDateTime horaInicio = LocalDateTime.parse(request.getHoraInicio());
         LocalDateTime horaFin = LocalDateTime.parse(request.getHoraFin());
         String aula = request.getAula();
@@ -88,7 +97,7 @@ public class AgendaService {
         System.out.println("Se han creado " + numeroDeAgendas + " agendas semanalmente a partir de la fecha " + request.getHoraInicio());
     }
 
-    public List<Agenda> search(Long servicio, Long grupo, LocalDateTime desde, LocalDateTime hasta) {
+    public List<AgendaResponseDTO> search(Long servicio, Long grupo, LocalDateTime desde, LocalDateTime hasta) {
         List<Agenda> agendas = agendaRepository.findAll();
         if (servicio != null) {
             agendas = agendas.stream()
@@ -110,6 +119,32 @@ public class AgendaService {
                     .filter(a -> !a.getHoraFin().isAfter(hasta))
                     .toList();
         }
-        return agendas;
+        return agendas.stream().map(AgendaService::toDTO).toList();
     }
+    // Obtener dias disponibles para un servicio apartir de las agendas
+    public List<LocalDate> getDiasDisponiblesParaServicio(Long servicioId, LocalDateTime desde, LocalDateTime hasta) {
+       List <AgendaResponseDTO> agendas = search(servicioId, null, desde, hasta);
+       List <LocalDate> diasDisponibles = agendas.stream()
+               .map(AgendaResponseDTO::getHoraInicio)
+               .map(LocalDateTime::toLocalDate)
+               .distinct()
+               .toList();
+         return diasDisponibles;
+    }
+
+    // Mapper de Agenda a AgendaResponseDTO
+
+    private static AgendaResponseDTO toDTO(Agenda agenda) {
+
+        return new AgendaResponseDTO(
+                agenda.getId(),
+                agenda.getHoraInicio(),
+                agenda.getHoraFin(),
+                agenda.getAula(),
+                agenda.getServicio(),
+                agenda.getGrupo(),
+                agenda.calcularHuecos()
+        );
+    }
+
 }

@@ -16,6 +16,8 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
 
     List<Cita> findByAgendaServicioId(Long servicioId);
 
+    List<Cita> findByAgendaId(Long agendaId);
+
     List<Cita> findByAgendaHoraInicioBetween(
             LocalDateTime desde,
             LocalDateTime hasta

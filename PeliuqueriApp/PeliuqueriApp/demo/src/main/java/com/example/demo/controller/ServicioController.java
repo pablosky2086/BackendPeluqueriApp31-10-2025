@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Servicio;
+import com.example.demo.model.TipoServicio;
 import com.example.demo.service.ServicioService;
+import com.example.demo.service.TipoServicioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -19,9 +21,11 @@ import java.util.List;
 @RequestMapping("api/servicios")
 public class ServicioController {
     private final ServicioService servicioService;
+    private final TipoServicioService tipoServicioService;
 
-    public ServicioController(ServicioService servicioService) {
+    public ServicioController(ServicioService servicioService, TipoServicioService tipoServicioService) {
         this.servicioService = servicioService;
+        this.tipoServicioService = tipoServicioService;
     }
 
     @Operation(summary = "Obtener todos los servicios", description = "Devuelve todos los servicios disponibles")
@@ -44,6 +48,8 @@ public class ServicioController {
 
     @GetMapping("/servicio-por-tipo/{tipoId}")
     public List<Servicio> findServiciosByTipoServicioId(@PathVariable Long tipoId){
+        TipoServicio tipoServicio = tipoServicioService.findById(tipoId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Tipo Servicio no encontrado"));
         return servicioService.findServiciosByTipoServicioId(tipoId);
     }
 

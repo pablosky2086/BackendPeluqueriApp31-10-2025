@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,5 +40,15 @@ public class Agenda {
         this.servicio = servicio;
         this.grupo = grupo;
         this.aula = aula;
+    }
+
+    // Calcular los huecos dentro de la agenda
+    public List<LocalDateTime> calcularHuecos() {
+        int duracionServicio = servicio.getDuracion();
+        List<LocalDateTime> huecos = new ArrayList<>();
+        for (LocalDateTime i = horaInicio;i.isBefore(horaFin.minusMinutes(duracionServicio)); i = i.plusMinutes(duracionServicio)) {
+            huecos.add(i);
+        }
+        return huecos;
     }
 }

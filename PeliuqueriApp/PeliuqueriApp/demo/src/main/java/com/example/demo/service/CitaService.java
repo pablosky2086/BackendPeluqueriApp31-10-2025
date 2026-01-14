@@ -22,13 +22,15 @@ public class CitaService {
     private final CitaRepository citaRepository;
     private final AgendaRepository agendaRepository;
     private final ClienteService clienteService;
+    private final AuthService authService;
 
     public CitaService(CitaRepository citaRepository,
                        AgendaRepository agendaRepository,
-                       ClienteService clienteService) {
+                       ClienteService clienteService, AuthService authService) {
         this.citaRepository = citaRepository;
         this.agendaRepository = agendaRepository;
         this.clienteService = clienteService;
+        this.authService = authService;
     }
 
     // ---------------- GET ----------------
@@ -66,56 +68,77 @@ public class CitaService {
                 .findByAgendaGrupoIdAndAgendaHoraInicioBetween(grupoId, desde, hasta);
     }
 
+    public List<Cita> getCitasByAgenda(Long agendaId) {
+        return citaRepository.findByAgendaId(agendaId);
+    }
+
     // ---------------- POST ----------------
 
     public Cita create(NewCitaRequest request) {
 
-        /* Verificar que la agenda no tenga ya una cita */
-        /* Sólo se permite una cita por agenda */
-        /* A MODIFICAR si se permiten multiples citas por agenda */
-        if (citaRepository.existsByAgendaId(request.getAgendaId())) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "La agenda ya tiene una cita"
-            );
-        }
-
-        /* Buscar la agenda y el cliente, si no los encuentra lanza un 404 */
+        // Buscar agenda
         Agenda agenda = agendaRepository.findById(request.getAgendaId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Agenda no encontrada"));
 
+        // Buscar cliente
         Cliente cliente = clienteService.findById(request.getClienteId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Cliente no encontrado"));
 
-        /* Extraer la hora de inicio de la cita del request */
-        /* Si no se proporciona, usar la hora de inicio de la agenda */
-        LocalDateTime inicio = request.getFechaHoraInicio() != null ?
-                LocalDateTime.parse(request.getFechaHoraInicio())
-                : agenda.getHoraInicio();
+        // Autorización (YA con datos reales)
+        if (!authService.isAdmin()
+                && !authService.isGrupo()
+                && !cliente.getId().equals(authService.getCurrentUserId())) {
 
-        /* Si la hora de la cita es antes de la agenda lanza un 400 */
-        if (inicio.isBefore(agenda.getHoraInicio())) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "La hora de inicio de la cita no puede ser antes que la hora de inicio de la agenda"
-            );
-        }
-        /* Calcular la hora de fin de la cita */
-        /* Si la hora de fin de la cita excede la hora de fin de la agenda lanza un 400 */
-        Servicio servicio = agenda.getServicio();
-        LocalDateTime finCita = inicio.plusMinutes(servicio.getDuracion());
-        if (finCita.isAfter(agenda.getHoraFin())) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "La hora de fin de la cita excede la hora de fin de la agenda"
+                    HttpStatus.FORBIDDEN,
+                    "No tienes permiso para crear una cita para este cliente"
             );
         }
 
-        Cita cita = new Cita(inicio , agenda, cliente);
+        // Regla de negocio: El cliente sólo puede tener cita en los huecos de la agenda
+        List<LocalDateTime> huecos = agenda.calcularHuecos();
+        LocalDateTime hora = LocalDateTime.parse(request.getFechaHoraInicio());
+        if (!huecos.contains(hora)) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "La hora de la cita no coincide con los huecos disponibles de la agenda"
+            );
+        }
+
+//        //  Regla de negocio: una cita por agenda
+//        if (citaRepository.existsByAgendaId(request.getAgendaId())) {
+//            throw new ResponseStatusException(
+//                    HttpStatus.CONFLICT,
+//                    "La agenda ya tiene una cita"
+//            );
+//        }
+
+
+//        if (inicio.isBefore(agenda.getHoraInicio())) {
+//            throw new ResponseStatusException(
+//                    HttpStatus.BAD_REQUEST,
+//                    "La hora de inicio de la cita no puede ser antes que la hora de inicio de la agenda"
+//            );
+//        }
+
+        // Hora de fin
+//        Servicio servicio = agenda.getServicio();
+//        LocalDateTime finCita = inicio.plusMinutes(servicio.getDuracion());
+//
+//        if (finCita.isAfter(agenda.getHoraFin())) {
+//            throw new ResponseStatusException(
+//                    HttpStatus.BAD_REQUEST,
+//                    "La hora de fin de la cita excede la hora de fin de la agenda"
+//            );
+//        }
+
+        //  Crear y guardar
+        Cita cita = new Cita(hora, agenda, cliente);
         return citaRepository.save(cita);
     }
+
 
     // ---------------- DELETE ----------------
 
