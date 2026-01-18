@@ -33,13 +33,15 @@ public class Agenda {
     @OneToMany(mappedBy = "agenda")
     @JsonIgnore
     private List<Cita> citas;
+    int sillas; // Por defecto 10 puesto en el seed
 
-    public Agenda(LocalDateTime horaInicio, LocalDateTime horaFin, Servicio servicio, Grupo grupo, String aula) {
+    public Agenda(LocalDateTime horaInicio, LocalDateTime horaFin, Servicio servicio, Grupo grupo, String aula, int sillas) {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.servicio = servicio;
         this.grupo = grupo;
         this.aula = aula;
+        this.sillas = sillas;
     }
 
     // Calcular los huecos dentro de la agenda
@@ -50,5 +52,22 @@ public class Agenda {
             huecos.add(i);
         }
         return huecos;
+    }
+
+    // Ver si es disponible en una fecha y hora dada
+    public boolean esDisponible(LocalDateTime fechaHora) {
+        // Comprobar si la fechaHora esta dentro del rango de la agenda
+        if (fechaHora.isBefore(horaInicio) || fechaHora.isAfter(horaFin.minusMinutes(servicio.getDuracion()))) {
+            return false;
+        }
+        // Comprobar si la fechaHora es anterior a la hora actual
+        if (fechaHora.isBefore(LocalDateTime.now())) {
+            return false;
+        }
+        // Comprobar el numero de citas ya existentes en esa hora de inicio
+        long citasEnEseMomento = citas.stream()
+                .filter(cita -> cita.getFechaHoraInicio().equals(fechaHora))
+                .count();
+        return citasEnEseMomento < sillas;
     }
 }

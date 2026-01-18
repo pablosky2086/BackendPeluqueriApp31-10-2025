@@ -6,6 +6,7 @@ import com.example.demo.model.Servicio;
 import com.example.demo.payload.DTOs.AgendaResponseDTO;
 import com.example.demo.payload.request.AgendaRequest;
 import com.example.demo.repository.AgendaRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,7 +22,7 @@ public class AgendaService {
     private final GrupoService grupoService;
     private final ServicioService servicioService;
 
-    public AgendaService(AgendaRepository agendaRepository, GrupoService grupoService, ServicioService servicioService) {
+    public AgendaService(AgendaRepository agendaRepository, @Lazy GrupoService grupoService, @Lazy ServicioService servicioService) {
         this.agendaRepository = agendaRepository;
         this.grupoService = grupoService;
         this.servicioService = servicioService;
@@ -79,7 +80,8 @@ public class AgendaService {
         LocalDateTime horaInicio = LocalDateTime.parse(request.getHoraInicio());
         LocalDateTime horaFin = LocalDateTime.parse(request.getHoraFin());
         String aula = request.getAula();
-        Agenda agenda = new Agenda(horaInicio, horaFin, servicio, grupo, aula);
+        int sillas = request.getSillas();
+        Agenda agenda = new Agenda(horaInicio, horaFin, servicio, grupo, aula,sillas);
         return agendaRepository.save(agenda);
     }
 
@@ -91,7 +93,8 @@ public class AgendaService {
             LocalDateTime horaInicio = LocalDateTime.parse(request.getHoraInicio()).plusDays(i*7);
             LocalDateTime horaFin = LocalDateTime.parse(request.getHoraFin()).plusDays(i*7);
             String aula = request.getAula();
-            Agenda agenda = new Agenda(horaInicio, horaFin, servicio, grupo, aula);
+            int sillas = request.getSillas();
+            Agenda agenda = new Agenda(horaInicio, horaFin, servicio, grupo, aula, sillas);
             agendaRepository.save(agenda);
         }
         System.out.println("Se han creado " + numeroDeAgendas + " agendas semanalmente a partir de la fecha " + request.getHoraInicio());
@@ -122,8 +125,8 @@ public class AgendaService {
         return agendas.stream().map(AgendaService::toDTO).toList();
     }
     // Obtener dias disponibles para un servicio apartir de las agendas
-    public List<LocalDate> getDiasDisponiblesParaServicio(Long servicioId, LocalDateTime desde, LocalDateTime hasta) {
-       List <AgendaResponseDTO> agendas = search(servicioId, null, desde, hasta);
+    public List<LocalDate> getDiasDisponiblesParaServicio(Long servicioId, Long grupo, LocalDateTime desde, LocalDateTime hasta) {
+       List <AgendaResponseDTO> agendas = search(servicioId, grupo, desde, hasta);
        List <LocalDate> diasDisponibles = agendas.stream()
                .map(AgendaResponseDTO::getHoraInicio)
                .map(LocalDateTime::toLocalDate)
@@ -141,6 +144,7 @@ public class AgendaService {
                 agenda.getHoraInicio(),
                 agenda.getHoraFin(),
                 agenda.getAula(),
+                agenda.getSillas(),
                 agenda.getServicio(),
                 agenda.getGrupo(),
                 agenda.calcularHuecos()

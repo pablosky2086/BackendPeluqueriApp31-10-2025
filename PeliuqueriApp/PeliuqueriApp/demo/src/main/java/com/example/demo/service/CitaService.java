@@ -107,14 +107,12 @@ public class CitaService {
             );
         }
 
-//        //  Regla de negocio: una cita por agenda
-//        if (citaRepository.existsByAgendaId(request.getAgendaId())) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.CONFLICT,
-//                    "La agenda ya tiene una cita"
-//            );
-//        }
-
+        if (!agenda.esDisponible(hora)){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "A esa hora no quedan sillas disponibles"
+            );
+        }
 
 //        if (inicio.isBefore(agenda.getHoraInicio())) {
 //            throw new ResponseStatusException(

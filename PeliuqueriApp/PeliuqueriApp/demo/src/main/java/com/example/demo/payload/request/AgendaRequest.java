@@ -15,4 +15,5 @@ public class AgendaRequest {
     private Long grupoId;
     private Long servicioId;
     private String aula;
+    private int sillas;
 }

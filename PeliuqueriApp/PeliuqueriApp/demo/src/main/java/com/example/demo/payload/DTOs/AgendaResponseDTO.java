@@ -16,6 +16,7 @@ public class AgendaResponseDTO {
     private LocalDateTime horaInicio;
     private LocalDateTime horaFin;
     private String aula;
+    private int sillas;
 
     private Servicio servicio;
     private Grupo grupo;

@@ -6,12 +6,15 @@ import com.example.demo.model.Grupo;
 import com.example.demo.model.Turno;
 import com.example.demo.service.GrupoService;
 import org.apache.coyote.Response;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +28,25 @@ public class GrupoController {
         this.grupoService = grupoService;
     }
 
+//    @GetMapping("/")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+//    public Object getAllGrupos() {
+//        return grupoService.findAll();
+//    }
+
     @GetMapping("/")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public Object getAllGrupos() {return grupoService.findAll();}
+    public ResponseEntity<List<Grupo>> search(
+            @RequestParam (required = false) Long servicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate desde,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate hasta
+    ) {
+        LocalDateTime desdeDateTime = (desde != null) ? desde.atStartOfDay() : null;
+        LocalDateTime hastaDateTime = (hasta != null) ? hasta.atTime(23, 59, 59) : null;
+        List<Grupo> grupos = grupoService.search(servicio, desdeDateTime, hastaDateTime);
+        return ResponseEntity.ok(grupos);
+    }
+
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")

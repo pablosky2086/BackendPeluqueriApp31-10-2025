@@ -3,11 +3,13 @@ package com.example.demo.service;
 import com.example.demo.model.Grupo;
 import com.example.demo.model.Servicio;
 import com.example.demo.model.Usuario;
+import com.example.demo.payload.DTOs.AgendaResponseDTO;
 import com.example.demo.repository.GrupoRepository;
 import com.example.demo.repository.ServicioRepository;
 import com.example.demo.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,9 +17,11 @@ import java.util.Optional;
 public class GrupoService{
     private final GrupoRepository grupoRepository;
     private final ServicioRepository servicioRepository;
+    private final AgendaService agendaService;
 
-    public GrupoService(UsuarioRepository usuarioRepository, GrupoRepository grupoRepository, ServicioRepository servicioRepository) {this.grupoRepository = grupoRepository;
+    public GrupoService(UsuarioRepository usuarioRepository, GrupoRepository grupoRepository, ServicioRepository servicioRepository, AgendaService agendaService) {this.grupoRepository = grupoRepository;
         this.servicioRepository = servicioRepository;
+        this.agendaService = agendaService;
     }
 
     public List<Grupo> findAll() {return grupoRepository.findAll();}
@@ -87,5 +91,13 @@ public class GrupoService{
         grupoRepository.save(grupo);
 
         return true;
+    }
+
+    public List<Grupo> search(Long servicio, LocalDateTime desdeDateTime, LocalDateTime hastaDateTime) {
+        List<AgendaResponseDTO> agendas = agendaService.search(servicio, null, desdeDateTime, hastaDateTime);
+        return agendas.stream()
+                .map(AgendaResponseDTO::getGrupo)
+                .distinct()
+                .toList();
     }
 }

@@ -65,14 +65,16 @@ public class AgendaController {
     //Obetener dias disponibles para un servicio
     @GetMapping("/dias/")
     public ResponseEntity<List<LocalDate>> getDiasDisponibles(
-            @RequestParam Long servicio,
+            @RequestParam (required = false)Long servicio,
+            @RequestParam (required = false) Long grupo,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate desde,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate hasta
     ){
+        System.out.println("Controller: Obteniendo dias disponibles para el servicio ID: " + servicio + " y grupo ID: " + grupo);
         LocalDateTime desdeDateTime = (desde != null) ? desde.atStartOfDay() : null;
         LocalDateTime hastaDateTime = (hasta != null) ? hasta.atTime(23, 59, 59) : null;
 
-        return ResponseEntity.ok(agendaService.getDiasDisponiblesParaServicio(servicio, desdeDateTime, hastaDateTime));
+        return ResponseEntity.ok(agendaService.getDiasDisponiblesParaServicio(servicio, grupo, desdeDateTime, hastaDateTime));
     }
     // Metodos POST
     // Crear una nueva agenda
