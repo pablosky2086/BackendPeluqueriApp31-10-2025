@@ -147,7 +147,7 @@ public class AgendaService {
                 agenda.getSillas(),
                 agenda.getServicio(),
                 agenda.getGrupo(),
-                agenda.calcularHuecos()
+                agenda.horasDisponiblesConEstado()
         );
     }
 

@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -21,5 +22,5 @@ public class AgendaResponseDTO {
     private Servicio servicio;
     private Grupo grupo;
 
-    private List<LocalDateTime> huecos;
+    private Map<LocalDateTime, Boolean> horasDisponiblesEstado;
 }

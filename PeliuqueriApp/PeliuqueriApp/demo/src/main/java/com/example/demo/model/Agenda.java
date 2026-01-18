@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.Collectors.toMap;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -70,4 +73,17 @@ public class Agenda {
                 .count();
         return citasEnEseMomento < sillas;
     }
+
+    // Retornar una lista de horas disponibles con su estado
+    public Map<LocalDateTime, Boolean> horasDisponiblesConEstado() {
+        List<LocalDateTime> huecos = calcularHuecos();
+        return huecos.stream()
+                .collect(
+                        toMap(
+                                hora -> hora,
+                                hora -> esDisponible(hora)
+                        )
+                );
+    }
+
 }
