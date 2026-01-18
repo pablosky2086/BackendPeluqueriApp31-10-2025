@@ -11,16 +11,17 @@ import com.example.demo.repository.GrupoRepository;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.security.jwt.JwtUtils;
 import com.example.demo.security.services.UserDetailsImpl;
+import com.example.demo.service.EmailService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/auth")
@@ -34,7 +35,10 @@ public class AuthController {
     private final AdminRepository adminRepository;
     private final GrupoRepository grupoRepository;
 
-    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils, ClienteRepository clienteRepository, AdminRepository adminRepository, GrupoRepository grupoRepository) {
+    // Propiedades de recuperación de contraseña
+    private final EmailService emailService;
+
+    public AuthController(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils, ClienteRepository clienteRepository, AdminRepository adminRepository, GrupoRepository grupoRepository, EmailService emailService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -42,6 +46,7 @@ public class AuthController {
         this.clienteRepository = clienteRepository;
         this.adminRepository = adminRepository;
         this.grupoRepository = grupoRepository;
+        this.emailService = emailService;
     }
 
     @PostMapping("/login")
@@ -138,5 +143,63 @@ public class AuthController {
     }
 
 
+    // Métodos para recuperación de contraseña
+    // Endpoint 1: El usuario pide recuperar contraseña
+    @PostMapping("/forgot-password")
+    public String solicitarReset(@RequestParam String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Email no encontrado"));
+
+        // Generamos Token para validar luego
+        String token = UUID.randomUUID().toString();
+        usuario.setTokenRecuperacion(token);
+        // El enlace solo vale por 30 minutos
+        usuario.setTokenExpiracion(LocalDateTime.now().plusMinutes(30));
+
+        usuarioRepository.save(usuario);
+
+        // Enviamos CORREO 1
+        emailService.enviarEnlaceConfirmacion(email, token);
+
+
+        return "Correo de confirmación enviado. Revisa tu bandeja.";
+    }
+
+    // Endpoint 2: El usuario envía el token y la nueva clave
+    @GetMapping("/reset-password")
+    public String resetPassword(@RequestParam String token) {
+// Buscamos al usuario por el token
+        System.out.println("Recibiendo petición de reseteo de contraseña con token: " + token);
+        Usuario usuario = usuarioRepository.findByTokenRecuperacion(token)
+                .orElseThrow(() -> new RuntimeException("Token inválido o no existe"));
+
+        // Verificamos si caducó
+        if (usuario.getTokenExpiracion().isBefore(LocalDateTime.now())) {
+            return "<h1>Error: El enlace ha caducado. Vuelve a solicitarlo.</h1>";
+        }
+
+        // 1. Generar contraseña aleatoria (8 chars)
+        String nuevaPass = UUID.randomUUID().toString().substring(0, 8);
+
+        // 2. Guardar en BD (Recuerda encriptar si usas Spring Security)
+        usuario.setContrasena(passwordEncoder.encode(nuevaPass));
+
+        // 3. Limpiar el token para que el enlace no se pueda usar dos veces
+        usuario.setTokenRecuperacion(null);
+        usuario.setTokenExpiracion(null);
+        usuarioRepository.save(usuario);
+
+        // 4. Enviar CORREO 2
+        emailService.enviarNuevaPassword(usuario.getEmail(), nuevaPass);
+
+        // Retornamos un HTML simple para que el usuario vea en su navegador
+        return """
+            <div style='text-align:center; padding:50px;'>
+                <h1 style='color:green;'>¡Éxito!</h1>
+                <p>Hemos generado una nueva contraseña.</p>
+                <p>Revisa tu correo de nuevo, te la acabamos de enviar.</p>
+            </div>
+            """;
+    }
 
 }

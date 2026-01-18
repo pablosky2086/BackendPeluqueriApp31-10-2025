@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -20,5 +22,9 @@ public class Usuario {
     private String email;
     private String contrasena;
     private Role role;
+
+    // Campos para recuperación de contraseña
+    private String tokenRecuperacion;
+    private LocalDateTime tokenExpiracion;
 
 }
