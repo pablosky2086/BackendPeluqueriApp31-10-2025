@@ -116,4 +116,13 @@ public class CitaController {
         citaService.cancelarPorId(id);
         return ResponseEntity.noContent().build();
     }
+
+    // PUT - Actualizar una cita existente
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GRUPO')")
+    public ResponseEntity<Cita> update(@PathVariable Long id, @RequestBody NewCitaRequest request) {
+        // Verificación de seguridad adicional si fuera necesaria
+        Cita actualizada = citaService.update(id, request);
+        return new ResponseEntity<>(actualizada, HttpStatus.OK);
+    }
 }

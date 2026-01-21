@@ -149,4 +149,45 @@ public class CitaService {
         }
         citaRepository.deleteById(id);
     }
+
+    // ---------------- PUT (Actualizar) ----------------
+
+    public Cita update(Long id, NewCitaRequest request) {
+        // 1. Verificar que la cita existe
+        Cita citaExistente = citaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "La cita con ID " + id + " no existe"));
+
+        // 2. Buscar nueva agenda y cliente (pueden haber cambiado en la edición)
+        Agenda agenda = agendaRepository.findById(request.getAgendaId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Agenda no encontrada"));
+
+        Cliente cliente = clienteService.findById(request.getClienteId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Cliente no encontrado"));
+
+        // 3. Validar disponibilidad (Misma lógica que create)
+        LocalDateTime nuevaHora = LocalDateTime.parse(request.getFechaHoraInicio());
+        List<LocalDateTime> huecos = agenda.calcularHuecos();
+
+        if (!huecos.contains(nuevaHora)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Hora no válida para esta agenda");
+        }
+
+        // Solo validamos disponibilidad de sillas si se ha cambiado la hora o la agenda
+        if (!citaExistente.getFechaHoraInicio().equals(nuevaHora) || !citaExistente.getAgenda().getId().equals(agenda.getId())) {
+            if (!agenda.esDisponible(nuevaHora)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No quedan sillas disponibles para el cambio");
+            }
+        }
+
+        // 4. Actualizar campos del objeto existente
+        citaExistente.setFechaHoraInicio(nuevaHora);
+        citaExistente.setAgenda(agenda);
+        citaExistente.setCliente(cliente);
+
+        // 5. Guardar (JPA detectará el ID y hará un UPDATE)
+        return citaRepository.save(citaExistente);
+    }
 }
